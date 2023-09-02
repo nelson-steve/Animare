@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "defines.h"
+#include "defines.hpp"
 #include <math.h>
 #include <assert.h>
 
@@ -93,7 +93,7 @@ public:
 	real angle(const vec3& lhs, const vec3& rhs) const;
 	real angle_in_degrees(const vec3& lhs, const vec3& rhs) const {
 		// multiply by 0.0174533 to convert degrees to radians
-		angle(lhs, rhs) * 57.2958f; // converting angle from raidans to degrees
+		return angle(lhs, rhs) * 57.2958f; // converting angle from raidans to degrees
 	}
 	//     /\
 	//     /
