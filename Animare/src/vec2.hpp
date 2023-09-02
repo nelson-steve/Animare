@@ -2,6 +2,8 @@
 
 #include "defines.hpp"
 
+#include <math.h>
+
 template<typename T>
 class vec2_t {
 public:
@@ -99,33 +101,3 @@ private:
 typedef vec2_t<real> vec2;
 typedef vec2_t<int> i_vec2;
 typedef vec2_t<uint32_t> u_vec2;
-
-template <typename T>
-const T min2(const T val1, const T val2)
-{
-	return val1 < val2 ? val1 : val2;
-}
-
-template <typename T>
-const T max2(const T val1, const T val2)
-{
-	return val1 > val2 ? val1 : val2;
-}
-
-template <typename T>
-float sign(const T val) {
-	return val > 0 ? 1 : val < 0 ? -1 : 0;
-}
-
-template <typename T>
-const T clamp(const T x, const T min, const T max)
-{
-
-	if (x < min)
-		return min;
-	else if (x > max)
-		return max;
-
-	return x;
-}
-

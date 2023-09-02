@@ -134,6 +134,7 @@
     <ClInclude Include="src\defines.hpp" />
     <ClInclude Include="src\vec2.hpp" />
     <ClInclude Include="src\vec3.hpp" />
+    <ClInclude Include="src\vec4.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
