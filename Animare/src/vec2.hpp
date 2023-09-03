@@ -3,6 +3,7 @@
 #include "defines.hpp"
 
 #include <math.h>
+#include <assert.h>
 
 template<typename T>
 class vec2_t {

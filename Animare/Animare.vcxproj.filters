@@ -35,5 +35,8 @@
     <ClInclude Include="src\vec4.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\mat4.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

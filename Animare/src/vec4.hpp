@@ -92,8 +92,8 @@ public:
 	// setters
 	inline void set_x(T x) { m_x = x; }
 	inline void set_y(T y) { m_y = y; }
-	inline void set_y(T z) { m_z = z; }
-	inline void set_y(T w) { m_w = w; }
+	inline void set_z(T z) { m_z = z; }
+	inline void set_w(T w) { m_w = w; }
 	inline void set_vec(const vec4_t& vec) {
 		m_x = vec.x();
 		m_y = vec.y();
