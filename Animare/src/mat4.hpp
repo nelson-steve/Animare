@@ -1,6 +1,9 @@
 #pragma once
 
 #include "vec4.hpp"
+#include "defines.hpp"
+
+#include <assert.h>
 
 // column major matrix
 class mat4 {
@@ -21,6 +24,42 @@ public:
 		m_forward  (_20, _21, _22, _23),
 		m_position (_30, _31, _32, _33) 
 	{}
+
+	// operators
+	friend bool operator==(const mat4& lhs, const mat4& rhs) {
+		for (int i = 0; i < 16; ++i) {
+			if (fabsf(lhs[i] - rhs[i]) > MAT4_EPSILON) {
+				return false;
+			}
+		}
+		return true;
+	}
+	friend bool operator!=(const mat4& a, const mat4& b) {
+		return !(a == b);
+	}
+	real operator[](int i) const {
+		assert(i >= 0 && i <= 15);
+		if (i >= 0 && i <= 3) return  m_right[i];
+		if (i >= 4 && i <= 7) return  m_up[i - 4];
+		if (i >= 8 && i <= 11) return m_forward[i - 8];
+		if (i >= 12 && i <= 15) return m_position[i - 12];
+	}
+	friend mat4 operator+(const mat4& a, const mat4& b) {
+		return mat4(
+			a.xx() + b.xx(), a.xy() + b.xy(), a.xz() + b.xz(), a.xw() + b.xw(),
+			a.yx() + b.yx(), a.yy() + b.yy(), a.yz() + b.yz(), a.yw() + b.yw(),
+			a.zx() + b.zx(), a.zy() + b.zy(), a.zz() + b.zz(), a.zw() + b.zw(),
+			a.wx() + b.wx(), a.wy() + b.wy(), a.wz() + b.wz(), a.ww() + b.ww()
+		);
+	}
+	friend mat4 operator*(const mat4& m, float f) {
+		return mat4(
+			m.xx() * f, m.xy() * f, m.xz() * f, m.xw() * f,
+			m.yx() * f, m.yy() * f, m.yz() * f, m.yw() * f,
+			m.zx() * f, m.zy() * f, m.zz() * f, m.zw() * f,
+			m.wx() * f, m.wy() * f, m.wz() * f, m.ww() * f
+		);
+	}
 
 	// getters
 	vec4 get_right()	const { return m_right; }
