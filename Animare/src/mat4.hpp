@@ -1,10 +1,10 @@
 #pragma once
 
 #include "vec4.hpp"
+#include "vec3.hpp"
 #include "defines.hpp"
 
 #include <assert.h>
-#include "vec3.hpp"
 
 #define MAT4_DOT(a_row, b_col) \
 	lhs[0 * 4 + a_row] * rhs[b_col * 4 + 0] + \
@@ -169,26 +169,97 @@ public:
 			 + m[8] * MAT4_3X3MINOR(m, 0, 1, 3, 1, 2, 3)
 			- m[12] * MAT4_3X3MINOR(m, 0, 1, 2, 1, 2, 3);
 	}
-	mat4 adjugate(const mat4& m) {
+	mat4 adjugate(const mat4& mat) {
 		//Cof (M[i, j]) = Minor(M[i, j]] * pow(-1, i + j)
 		mat4 cofactor;
-		cofactor.set_at_index(0 ,  MAT4_3X3MINOR(m, 1, 2, 3, 1, 2, 3));
-		cofactor.set_at_index(1 , -MAT4_3X3MINOR(m, 1, 2, 3, 0, 2, 3));
-		cofactor.set_at_index(2 ,  MAT4_3X3MINOR(m, 1, 2, 3, 0, 1, 3));
-		cofactor.set_at_index(3 , -MAT4_3X3MINOR(m, 1, 2, 3, 0, 1, 2));
-		cofactor.set_at_index(4 , -MAT4_3X3MINOR(m, 0, 2, 3, 1, 2, 3));
-		cofactor.set_at_index(5 ,  MAT4_3X3MINOR(m, 0, 2, 3, 0, 2, 3));
-		cofactor.set_at_index(6 , -MAT4_3X3MINOR(m, 0, 2, 3, 0, 1, 3));
-		cofactor.set_at_index(7 ,  MAT4_3X3MINOR(m, 0, 2, 3, 0, 1, 2));
-		cofactor.set_at_index(8 ,  MAT4_3X3MINOR(m, 0, 1, 3, 1, 2, 3));
-		cofactor.set_at_index(9 , -MAT4_3X3MINOR(m, 0, 1, 3, 0, 2, 3));
-		cofactor.set_at_index(10,  MAT4_3X3MINOR(m, 0, 1, 3, 0, 1, 3));
-		cofactor.set_at_index(11, -MAT4_3X3MINOR(m, 0, 1, 3, 0, 1, 2));
-		cofactor.set_at_index(12, -MAT4_3X3MINOR(m, 0, 1, 2, 1, 2, 3));
-		cofactor.set_at_index(13,  MAT4_3X3MINOR(m, 0, 1, 2, 0, 2, 3));
-		cofactor.set_at_index(14, -MAT4_3X3MINOR(m, 0, 1, 2, 0, 1, 3));
-		cofactor.set_at_index(15,  MAT4_3X3MINOR(m, 0, 1, 2, 0, 1, 2));
+		cofactor.set_at_index(0 ,  MAT4_3X3MINOR(mat, 1, 2, 3, 1, 2, 3));
+		cofactor.set_at_index(1 , -MAT4_3X3MINOR(mat, 1, 2, 3, 0, 2, 3));
+		cofactor.set_at_index(2 ,  MAT4_3X3MINOR(mat, 1, 2, 3, 0, 1, 3));
+		cofactor.set_at_index(3 , -MAT4_3X3MINOR(mat, 1, 2, 3, 0, 1, 2));
+		cofactor.set_at_index(4 , -MAT4_3X3MINOR(mat, 0, 2, 3, 1, 2, 3));
+		cofactor.set_at_index(5 ,  MAT4_3X3MINOR(mat, 0, 2, 3, 0, 2, 3));
+		cofactor.set_at_index(6 , -MAT4_3X3MINOR(mat, 0, 2, 3, 0, 1, 3));
+		cofactor.set_at_index(7 ,  MAT4_3X3MINOR(mat, 0, 2, 3, 0, 1, 2));
+		cofactor.set_at_index(8 ,  MAT4_3X3MINOR(mat, 0, 1, 3, 1, 2, 3));
+		cofactor.set_at_index(9 , -MAT4_3X3MINOR(mat, 0, 1, 3, 0, 2, 3));
+		cofactor.set_at_index(10,  MAT4_3X3MINOR(mat, 0, 1, 3, 0, 1, 3));
+		cofactor.set_at_index(11, -MAT4_3X3MINOR(mat, 0, 1, 3, 0, 1, 2));
+		cofactor.set_at_index(12, -MAT4_3X3MINOR(mat, 0, 1, 2, 1, 2, 3));
+		cofactor.set_at_index(13,  MAT4_3X3MINOR(mat, 0, 1, 2, 0, 2, 3));
+		cofactor.set_at_index(14, -MAT4_3X3MINOR(mat, 0, 1, 2, 0, 1, 3));
+		cofactor.set_at_index(15,  MAT4_3X3MINOR(mat, 0, 1, 2, 0, 1, 2));
 		return transposed(cofactor);
+	}
+	mat4 inverse(const mat4& mat) {
+		float det = determinant(mat);
+
+		if (det == 0.0f) {
+			std::cout << " Matrix determinant is 0\n";
+			return mat4();
+		}
+		mat4 adj = adjugate(mat);
+		return adj * (1.0f / det);
+	}
+	void invert(mat4& mat) {
+		float det = determinant(mat);
+		if (det == 0.0f) {
+			std::cout << "Matrix determinant is 0\n";
+			mat = mat4();
+			return;
+		}
+		mat = adjugate(mat) * (1.0f / det);
+	}
+	mat4 frustum(real l, real r, real b,
+		real t, real n, real f) {
+		if (l == r || t == b || n == f) {
+			std::cout << "Invalid frustum\n";
+			return mat4(); // Error
+		}
+		return mat4(
+			(2.0f * n) / (r - l), 0, 0, 0,
+			0, (2.0f * n) / (t - b), 0, 0,
+			(r + l) / (r - l), (t + b) / (t - b), (-(f + n)) / (f - n), -1,
+			0, 0, (-2 * f * n) / (f - n), 0
+		);
+	}
+	mat4 perspective(float fov, float aspect, float n, float f) {
+		float ymax = n * tanf(fov * PI / 360.0f);
+		float xmax = ymax * aspect;
+		return frustum(-xmax, xmax, -ymax, ymax, n, f);
+	}
+	mat4 ortho(float l, float r, float b, float t,
+		float n, float f) {
+		if (l == r || t == b || n == f) {
+			return mat4(); // Error
+		}
+		return mat4(
+			2.0f / (r - l), 0, 0, 0,
+			0, 2.0f / (t - b), 0, 0,
+			0, 0, -2.0f / (f - n), 0,
+			-((r + l) / (r - l)), -((t + b) / (t - b)), -((f + n) / (f - n)), 1
+		);
+	}
+	mat4 lookAt(const vec3& position, const vec3& target,
+		const vec3& up) {
+		vec3 f = vec3::normalized(target - position) * -1.0f;
+		vec3 r = vec3::cross(up, f); // Right handed
+		if (r == vec3(0, 0, 0)) {
+			return mat4(); // Error
+		}
+		vec3::normalize(r);
+		vec3 u = vec3::normalized(vec3::cross(f, r)); // Right handed
+		vec3 t = vec3(
+			-vec3::dot(r, position),
+			-vec3::dot(u, position),
+			-vec3::dot(f, position)
+		);
+		return mat4(
+			// Transpose upper 3x3 matrix to invert it
+			r.x(), u.x(), f.x(), 0,
+			r.y(), u.y(), f.y(), 0,
+			r.z(), u.z(), f.z(), 0,
+			t.x(), t.y(), t.z(), 1
+		);
 	}
 
 

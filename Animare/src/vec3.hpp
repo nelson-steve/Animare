@@ -60,7 +60,7 @@ public:
 	// | 0 if the vectors are perpendicular '|__'
 	// | if both lhs and rhs have a unit length, the dot product will have a range of '-1 to 1'
 	// | A.B = |A||B|cosθ ('|A|' -> length of 'A')
-	real dot(const vec3& lhs, const vec3& rhs) const {
+	static real dot(const vec3& lhs, const vec3& rhs) {
 		return  lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z();
 	}
 	// length square
@@ -68,7 +68,7 @@ public:
 		return vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
 	}
 	// length
-	real len(const vec3& vec) const {
+	static real len(const vec3& vec) {
 		real lenSquare = vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
 		if (lenSquare < VEC3_EPSILON) {
 			return 0.0f;
@@ -82,9 +82,9 @@ public:
 	// normalizing a vector
 	// normal / unit vector -> a vector with a length of '1'
 	// normalizes the vector given
-	void normalize(vec3& vec) const;
+	static void normalize(vec3& vec);
 	// creates a new normalized vector from the given vector and returns it
-	vec3 normalized(const vec3& vec) const;
+	static vec3 normalized(const vec3& vec);
 	// angle between two vectors
 	// cosθ = A.B    (where A and B are unit vectors)     
     // cosθ = A.B / |A||B|    (if A and B are not unit vectors)
@@ -116,17 +116,17 @@ public:
 	// A \ | / A'
 	//    \ /
 	// -------------->
-	vec3 reflect(const vec3& lhs, const vec3& rhs) const;
+	static vec3 reflect(const vec3& lhs, const vec3& rhs);
 	// cross product
 	// returns a third product perpendicular to the two vectors given
 	// AxB = |A||B|sinθ ('|A|' -> length of 'A')
-	vec3 cross(const vec3& lhs, const vec3& rhs) const;
+	static vec3 cross(const vec3& lhs, const vec3& rhs);
 	// interpolating vectors
 	// takes the shortest path between two vectors
 	// linearly scaling the difference between two vectors and adding it back to the original
 	// abbreviated as lerp
 	// lerp value is between 0 - 1
-	vec3 lerp(const vec3& start, const vec3& end, real t) const;
+	static vec3 lerp(const vec3& start, const vec3& end, real t);
 	// spherical linear interpolation - slerp
 	// takes the shortest arc between two vectors
 	// the angle between the two vectors needs to be known

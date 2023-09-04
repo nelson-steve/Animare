@@ -1,6 +1,6 @@
 #include "vec3.hpp"
 
-void vec3::normalize(vec3& vec) const {
+void vec3::normalize(vec3& vec) {
 	real len_square = vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
 	if (len_square < VEC3_EPSILON) { return; }
 	real inv_length = 1.0f / sqrtf(len_square);
@@ -10,7 +10,7 @@ void vec3::normalize(vec3& vec) const {
 	vec.m_is_normal = true;
 }
 
-vec3 vec3::normalized(const vec3& vec) const {
+vec3 vec3::normalized(const vec3& vec) {
 	real len_square = vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
 	if (len_square < VEC3_EPSILON) { return vec; }
 	real inv_length = 1.0f / sqrtf(len_square);
@@ -53,7 +53,7 @@ vec3 vec3::reject(const vec3& lhs, const vec3& rhs) const {
 	return lhs - project(lhs, rhs);
 }
 
-vec3 vec3::reflect(const vec3& lhs, const vec3& rhs) const {
+vec3 vec3::reflect(const vec3& lhs, const vec3& rhs) {
 	float magnitude_rhs = len(rhs);
 	if (magnitude_rhs < VEC3_EPSILON) {
 		return vec3();
@@ -63,7 +63,7 @@ vec3 vec3::reflect(const vec3& lhs, const vec3& rhs) const {
 	return lhs - projection_rhs;
 }
 
-vec3 vec3::cross(const vec3& lhs, const vec3& rhs) const {
+vec3 vec3::cross(const vec3& lhs, const vec3& rhs) {
 	return vec3(
 		lhs.y() * rhs.z() - lhs.z() * rhs.y(),
 		lhs.z() * rhs.x() - lhs.x() * rhs.z(),
@@ -71,7 +71,7 @@ vec3 vec3::cross(const vec3& lhs, const vec3& rhs) const {
 	);
 }
 
-vec3 vec3::lerp(const vec3& start, const vec3& end, real t) const {
+vec3 vec3::lerp(const vec3& start, const vec3& end, real t) {
 	return vec3(
 		start.x() + (end.x() - start.x()) * t,
 		start.y() + (end.y() - start.y()) * t,

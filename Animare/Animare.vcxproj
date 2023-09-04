@@ -131,6 +131,7 @@
     <ClCompile Include="src\vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\camera.hpp" />
     <ClInclude Include="src\defines.hpp" />
     <ClInclude Include="src\mat4.hpp" />
     <ClInclude Include="src\vec2.hpp" />

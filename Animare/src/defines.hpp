@@ -10,4 +10,4 @@ typedef float real;
 #define MAT4_EPSILON  0.000001f
 
 
-#define PI 3.14159265359
+#define PI 3.14159265359f
