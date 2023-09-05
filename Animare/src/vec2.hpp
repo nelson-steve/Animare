@@ -5,6 +5,10 @@
 #include <math.h>
 #include <assert.h>
 
+// templated vec2 class
+// can create int vec2 -> i_vec2
+// and unsigned vec2 -> u_vec2
+// and real(float, double) vec2 -> vec2
 template<typename T>
 class vec2_t {
 public:
@@ -39,7 +43,6 @@ public:
 		vec2_t vec(m_x, m_y);
 		return vec[i];
 	}
-	// comparison
 	bool operator==(const vec2_t& r) {
 		vec2_t diff(vec2_t(m_x, m_y) - r);
 		return len_square(diff) < VEC3_EPSILON;
@@ -69,7 +72,7 @@ public:
 		return vec.x() * vec.x() + vec.y() * vec.y();
 	}
 	// length
-	T len(const vec2_t& vec) const {
+	static T len(const vec2_t& vec) {
 		T len_square = vec.x() * vec.x() + vec.y() * vec.y();
 		if (len_square < VEC3_EPSILON) {
 			return 0.0f;
@@ -77,7 +80,7 @@ public:
 		return sqrtf(len_square);
 	}
 	// distance between two vectors
-	real distance(const vec2_t& lhs, const vec2_t& rhs) const {
+	static real distance(const vec2_t& lhs, const vec2_t& rhs) const {
 		len(lhs - rhs);
 	}
 
@@ -90,13 +93,17 @@ public:
 	// setters
 	inline void set_x(T x) { m_x = x; }
 	inline void set_y(T y) { m_y = y; }
+	inline void set_at_index(int index, real value) {
+		if (index == 0) m_x = value;
+		else if (index == 1) m_y = value;
+		else assert(false);
+	}
 	inline void set_vec(const vec2_t& vec) {
 		m_x = vec.x();
 		m_y = vec.y();
 	}
 private:
 	T m_x, m_y;
-	bool m_is_normal = false;
 };
 
 typedef vec2_t<real> vec2;

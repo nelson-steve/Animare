@@ -5,6 +5,10 @@
 #include <math.h>
 #include <cstdint>
 
+// templated vec4 class
+// can create int vec4 -> i_vec4
+// and unsigned vec4 -> u_vec4
+// and real(float, double) vec4 -> vec4
 template<typename T>
 class vec4_t {
 public:
@@ -39,7 +43,6 @@ public:
 		vec4_t vec(m_x, m_y, m_z, m_w);
 		return vec[i];
 	}
-	// comparison
 	bool operator==(const vec4_t& r) {
 		vec4_t diff(vec4_t(m_x, m_y, m_z, m_w) - r);
 		return len_square(diff) < VEC4_EPSILON;
@@ -53,16 +56,6 @@ public:
 	}
 	friend bool operator!=(const vec4_t& l, const vec4_t& r) {
 		return !(l == r);
-	}
-
-	// dot product
-	// | +ive if the vectors point in the same direction
-	// | -ive if the vectors point in opposite direction
-	// | 0 if the vectors are perpendicular '|__'
-	// | if both lhs and rhs have a unit length, the dot product will have a range of '-1 to 1'
-	// | A.B = |A||B|cosθ ('|A|' -> length of 'A')
-	T dot(const vec4_t& lhs, const vec4_t& rhs) const {
-		return  lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z() + lhs.w() * rhs.w();
 	}
 	// length square
 	static T len_square(const vec4_t& vec) {
@@ -102,7 +95,6 @@ public:
 	}
 private:
 	T m_x, m_y, m_z, m_w;
-	bool m_is_normal = false;
 };
 
 typedef vec4_t<real> vec4;

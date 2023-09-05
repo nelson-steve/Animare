@@ -68,6 +68,8 @@ public:
 		return vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
 	}
 	// length
+	// length(vec) = sqrt(x*x + y*y + z*z)
+	// square root should be avoided, if possible
 	static real len(const vec3& vec) {
 		real lenSquare = vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
 		if (lenSquare < VEC3_EPSILON) {
@@ -89,8 +91,9 @@ public:
 	// cosθ = A.B    (where A and B are unit vectors)     
     // cosθ = A.B / |A||B|    (if A and B are not unit vectors)
 	// θ = cos-1 A.B / |A||B|
-	// gives angle in radians
+	// gives the angle in radians
 	real angle(const vec3& lhs, const vec3& rhs) const;
+	// gives the angle in degrees
 	real angle_in_degrees(const vec3& lhs, const vec3& rhs) const {
 		// multiply by 0.0174533 to convert degrees to radians
 		return angle(lhs, rhs) * 57.2958f; // converting angle from raidans to degrees
@@ -112,7 +115,7 @@ public:
 	//      B
 	//     /\  /|
 	// \   |   /
-	//  \  |  /
+	//  \  |  /  <- Reflecion
 	// A \ | / A'
 	//    \ /
 	// -------------->
@@ -146,18 +149,22 @@ public:
 	inline real y() const { return m_y; }
 	inline real z() const { return m_z; }
 	inline vec3 get() const { return vec3(m_x, m_y, m_z); }
-	inline bool is_normal() const { return m_is_normal; }
 
 	// setters
 	inline void set_x(real x) { m_x = x; }
 	inline void set_y(real y) { m_y = y; }
 	inline void set_z(real z) { m_z = z; }
-	inline void set_vec(const vec3& vec) { 
-		m_x = vec.x(); 
+	inline void set_at_index(int index, real value) {
+		if		(index == 0) m_x = value;
+		else if (index == 1) m_y = value;
+		else if (index == 2) m_z = value;
+		else assert(false);
+	}
+	inline void set(const vec3& vec) {
+		m_x = vec.x();
 		m_y = vec.y();
 		m_z = vec.z();
 	}
 private:
 	real m_x, m_y, m_z;
-	bool m_is_normal = false;
 };
