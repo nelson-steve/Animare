@@ -1,5 +1,11 @@
 # Animation System
-- [ ] Math class
+- [X] Math class
+  - [X] vec2
+  - [X] vec3
+  - [X] vec4
+  - [X] mat4
+  - [X] transform
+  - [X] quaternion 
 - [ ] Renderer
 - [ ] Model Loader
 - [ ] Ui
