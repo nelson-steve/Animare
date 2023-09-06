@@ -7,5 +7,7 @@
   - [X] transform
   - [X] quaternion 
 - [ ] Renderer
+  - [ ] OpenGL 
 - [ ] Model Loader
-- [ ] Ui
+  - [ ] gltf loader
+- [ ] UI
