@@ -8,6 +8,7 @@ typedef float real;
 #define VEC3_EPSILON  0.000001f
 #define VEC4_EPSILON  0.000001f
 #define MAT4_EPSILON  0.000001f
+#define QUAT_EPSILON  0.000001f
 
 
 #define PI 3.14159265359f
