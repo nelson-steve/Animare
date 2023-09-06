@@ -1,5 +1,5 @@
 # Animation System
-- [X] Math class
+- [X] Math library
   - [X] vec2
   - [X] vec3
   - [X] vec4
