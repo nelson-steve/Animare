@@ -118,7 +118,7 @@ public:
     static float dot(const quaternion& a, const quaternion& b) {
         return a.x() * b.x() + a.y() * b.y() + a.z() * b.z() + a.w() * b.w();
     }
-    float dot(const quaternion& a, const quaternion& b) {
+    static float dot(const quaternion& a, const quaternion& b) {
         return a.x() * b.x() + a.y() * b.y() + a.z() * b.z() + a.w() * b.w();
     }
     float len(const quaternion& q) {

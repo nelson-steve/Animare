@@ -1,9 +1,10 @@
 ﻿#pragma once
 
-#include "defines.hpp"
+#include "../defines.hpp"
 
 #include <math.h>
 #include <assert.h>
+#include <cstdint>
 
 // templated vec2 class
 // can create int vec2 -> i_vec2

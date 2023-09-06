@@ -1,5 +1,7 @@
 #include "vec3.hpp"
 
+#include "../defines.hpp"
+
 void vec3::normalize(vec3& vec) {
 	real len_square = vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
 	if (len_square < VEC3_EPSILON) { return; }
