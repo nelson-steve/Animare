@@ -7,7 +7,6 @@ void vec3::normalize(vec3& vec) {
 	vec.set_x(vec.x() * inv_length);
 	vec.set_y(vec.y() * inv_length);
 	vec.set_z(vec.z() * inv_length);
-	vec.m_is_normal = true;
 }
 
 vec3 vec3::normalized(const vec3& vec) {
@@ -19,7 +18,6 @@ vec3 vec3::normalized(const vec3& vec) {
 		vec.y() * inv_length,
 		vec.z() * inv_length
 	);
-	new_vec.m_is_normal = true;
 	return new_vec;
 }
 
@@ -94,7 +92,7 @@ vec3 vec3::slerp(const vec3& start, const vec3& end, real t) const {
 	return from * a + to * b;
 }
 
-vec3 vec3::nlerp(const vec3& start, const vec3& end, real t) const {
+vec3 vec3::nlerp(const vec3& start, const vec3& end, real t) {
 	vec3 linear(
 		start.x() + (end.x() - start.x()) * t,
 		start.y() + (end.y() - start.y()) * t,

@@ -142,7 +142,7 @@ public:
 	// nlerp is not constant in velocity
 	// nlerp approximates slerp
 	// nlerp is faster than slerp
-	vec3 nlerp(const vec3& start, const vec3& end, real t) const;
+	static vec3 nlerp(const vec3& start, const vec3& end, real t);
 
 	// getters
 	inline real x() const { return m_x; }

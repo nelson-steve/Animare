@@ -290,6 +290,28 @@ public:
     vec4 get_up()		{ return m_up; }
     vec4 get_forward()  { return m_forward; }
     vec4 get_position() { return m_position; }
+    real get_at_index(int index) const {
+        if (index == 0)       return m_right.x();
+        else if (index == 1)  return m_right.y();
+        else if (index == 2)  return m_right.z();
+        else if (index == 3)  return m_right.w();
+
+        else if (index == 4)  return m_up.x();
+        else if (index == 5)  return m_up.y();
+        else if (index == 6)  return m_up.z();
+        else if (index == 7)  return m_up.w();
+
+        else if (index == 8)  return m_forward.x();
+        else if (index == 9)  return m_forward.y();
+        else if (index == 10) return m_forward.z();
+        else if (index == 11) return m_forward.w();
+
+        else if (index == 12) return m_position.x();
+        else if (index == 13) return m_position.y();
+        else if (index == 14) return m_position.z();
+        else if (index == 15) return m_position.w();
+        else assert(false); // invalid index value
+    }
     //
     real xx() const { return m_right.x(); }
     real xy() const { return m_right.y(); }

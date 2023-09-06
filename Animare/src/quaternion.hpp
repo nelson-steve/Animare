@@ -20,6 +20,9 @@ public:
     friend quaternion operator+(const quaternion& a, const quaternion& b) {
         return quaternion(a.x() + b.x(), a.y() + b.y(), a.z() + b.z(), a.w() + b.w());
     }
+    quaternion operator-() {
+        return quaternion(-m_x, -m_y, -m_z, -m_w);
+    }
     friend quaternion operator-(const quaternion& a, const quaternion& b) {
         return quaternion(a.x() - b.x(), a.y() - b.y(), a.z() - b.z(), a.w() - b.w());
     }
@@ -62,7 +65,7 @@ public:
     quaternion mix(const quaternion& from, const quaternion& to, real t) {
         return from * (1.0f - t) + to * t;
     }
-    quaternion nlerp(const quaternion& from, const quaternion& to, float t) {
+    static quaternion nlerp(const quaternion& from, const quaternion& to, float t) {
         return normalized(from + (to - from) * t);
     }
     friend quaternion operator^(const quaternion& q, float f) {
@@ -83,7 +86,7 @@ public:
         quaternion delta = inverse(start) * end;
         return normalized((delta ^ t) * start);
     }
-    quaternion look_rotation(const vec3& direction, const vec3& up) {
+    static quaternion look_rotation(const vec3& direction, const vec3& up) {
         // Find orthonormal basis vectors
         vec3 f = vec3::normalized(direction); // Object Forward
         vec3 u = vec3::normalized(up); // Desired Up
@@ -112,7 +115,7 @@ public:
                  fabsf(l.z() + r.z()) <= QUAT_EPSILON &&
                  fabsf(l.w() + r.w()) <= QUAT_EPSILON);
     }
-    float dot(const quaternion& a, const quaternion& b) {
+    static float dot(const quaternion& a, const quaternion& b) {
         return a.x() * b.x() + a.y() * b.y() + a.z() * b.z() + a.w() * b.w();
     }
     float dot(const quaternion& a, const quaternion& b) {
@@ -136,7 +139,7 @@ public:
         q.set_z(q.z() * i_len);
         q.set_w(q.w() * i_len);
     }
-    quaternion normalized(const quaternion& q) {
+    static quaternion normalized(const quaternion& q) {
         float lenSq = q.x() * q.x() + q.y() * q.y() + q.z() * q.z() + q.w() * q.w();
         if (lenSq < QUAT_EPSILON) {
             return quaternion();
@@ -165,7 +168,7 @@ public:
              q.w()
         );
     }
-    quaternion inverse(const quaternion& q) {
+    static quaternion inverse(const quaternion& q) {
         float lenSq = q.x() * q.x() + q.y() * q.y() + q.z() * q.z() + q.w() * q.w();
         if (lenSq < QUAT_EPSILON) {
             return quaternion();
@@ -178,7 +181,7 @@ public:
         );
     }
 
-    quaternion from_to(const vec3& from, const vec3& to) {
+    static quaternion from_to(const vec3& from, const vec3& to) {
         vec3 f = vec3::normalized(from);
         vec3 t = vec3::normalized(to);
         if (f == t) {
@@ -199,7 +202,7 @@ public:
         vec3 axis = vec3::cross(f, half);
         return quaternion(axis.x(), axis.y(), axis.z(), vec3::dot(f, half));
     }
-    mat4 quat_to_mat4(const quaternion& q) {
+    static mat4 quat_to_mat4(const quaternion& q) {
         vec3 r = q * vec3(1, 0, 0);
         vec3 u = q * vec3(0, 1, 0);
         vec3 f = q * vec3(0, 0, 1);
@@ -209,7 +212,7 @@ public:
             0, 0, 0, 1
         );
     }
-    quaternion mat4ToQuat(const mat4& m) {
+    static quaternion mat4ToQuat(const mat4& m) {
         vec3 up = vec3::normalized(vec3(m.get_up().x(), m.get_up().y(), m.get_up().z()));
         vec3 forward = vec3::normalized(
             vec3(m.get_forward().x(), m.get_forward().y(), m.get_forward().z()));
