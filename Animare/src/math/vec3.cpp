@@ -36,7 +36,9 @@ real vec3::angle(const vec3& lhs, const vec3& rhs) const {
 
 vec3 vec3::project(const vec3& lhs, const vec3& rhs) const {
 	real scale;
-	if (rhs.is_normal()) {
+	// TODO: implement is_normal function here
+	//if (rhs.is_normal()) {
+	if (false) {
 		scale = dot(lhs, rhs);
 	}
 	else {

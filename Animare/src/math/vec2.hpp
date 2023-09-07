@@ -81,7 +81,7 @@ public:
 		return sqrtf(len_square);
 	}
 	// distance between two vectors
-	static real distance(const vec2_t& lhs, const vec2_t& rhs) const {
+	static real distance(const vec2_t& lhs, const vec2_t& rhs) {
 		len(lhs - rhs);
 	}
 
@@ -89,7 +89,6 @@ public:
 	inline T x() const { return m_x; }
 	inline T y() const { return m_y; }
 	inline vec2_t get() const { return vec2_t(m_x, m_y); }
-	inline bool is_normal() const { return m_is_normal; }
 
 	// setters
 	inline void set_x(T x) { m_x = x; }

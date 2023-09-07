@@ -80,7 +80,6 @@ public:
 	inline T z() const { return m_z; }
 	inline T w() const { return m_w; }
 	inline vec4_t get() const { return vec4_t(m_x, m_y, m_z, m_w); }
-	inline bool is_normal() const { return m_is_normal; }
 
 	// setters
 	inline void set_x(T x) { m_x = x; }

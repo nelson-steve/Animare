@@ -1,10 +1,13 @@
 #include <iostream>
 
-#include "vec2.hpp"
-#include "vec3.hpp"
-#include "vec4.hpp"
-#include "mat4.hpp"
+#include "math/vec2.hpp"
+#include "math/vec3.hpp"
+#include "math/vec4.hpp"
+#include "math/mat4.hpp"
+#include "renderer/renderer.hpp"
 
 int main(int argc, char** argv) {
-	std::cout << "Hello Animare, an animation system";
+    renderer* r = new renderer();
+
+    delete r;
 }
