@@ -54,6 +54,9 @@ Makefile
 # local build(s)
 build*
 
+/doc
+/cmake
+/test
 /.vs
 /.vscode
 /CMakeSettings.json
