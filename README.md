@@ -6,8 +6,8 @@
   - [X] mat4
   - [X] transform
   - [X] quaternion 
-- [ ] Renderer
-  - [ ] OpenGL 
-- [ ] Model Loader
-  - [ ] gltf loader
+- [X] Renderer
+  - [X] OpenGL 
+- [X] Model Loader
+  - [X] gltf loader
 - [ ] UI
