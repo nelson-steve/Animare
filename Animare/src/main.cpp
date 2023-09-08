@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv) {
     renderer* r = new renderer();
-    r->update();
+    r->render();
     r->destroy();
     delete r;
 }
