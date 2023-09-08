@@ -1,6 +1,6 @@
 #pragma once
 
-#define GLFW_INCLUDE_NONE
+#include "shader.hpp"
 
 struct GLFWwindow;
 
@@ -11,4 +11,7 @@ public:
     void destroy();
 private:
     GLFWwindow* m_window;
+
+    uint32_t m_vao, m_vbo;
+    shader* m_shader;
 };

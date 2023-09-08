@@ -1,3 +1,5 @@
-﻿  renderer.cpp
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(23,38): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+﻿  main.cpp
+  renderer.cpp
+C:\dev\Animare\Animare\src\renderer\renderer.cpp(46,38): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  Generating Code...
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe
