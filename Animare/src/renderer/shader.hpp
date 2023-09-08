@@ -1,5 +1,9 @@
 #pragma once
 
+#include <glm/glm.hpp>
+#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -14,6 +18,12 @@ public:
     void compile_pixel_shader(const std::string pixel);
     void bind();
     void unbind();
+
+    void set_uniform_mat4(const std::string& name, const glm::mat4& matrix)
+    {
+        GLuint location = glGetUniformLocation(m_program_handle, name.c_str());
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
 private:
     uint32_t m_program_handle = 0;
     uint32_t m_vertex_handle = 0;

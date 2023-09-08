@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include <glad/glad.h>
-
 shader::shader(const std::string vertex_path, const std::string pixel_path)
 {
     {

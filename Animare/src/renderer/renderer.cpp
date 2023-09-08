@@ -4,6 +4,9 @@
 #include <vector>
 #include <iostream>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "tiny_gltf.h"
@@ -79,7 +82,7 @@ void bindMesh(std::map<int, GLuint>& vbos, tinygltf::Model& model, tinygltf::Mes
 
     for (size_t i = 0; i < mesh.primitives.size(); ++i) {
         tinygltf::Primitive primitive = mesh.primitives[i];
-        tinygltf::Accessor indexAccessor = model.accessors[primitive.indices];
+        //tinygltf::Accessor indexAccessor = model.accessors[primitive.indices];
 
         for (auto& attrib : primitive.attributes) {
             tinygltf::Accessor accessor = model.accessors[attrib.second];
@@ -238,6 +241,13 @@ void drawModel(const std::pair<GLuint, std::map<int, GLuint>>& vaoAndEbos,
 static std::pair<GLuint, std::map<int, GLuint>> vaoAndEbos;
 static tinygltf::Model model;
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+}
+
 renderer::renderer() {
     // glfw initialization
     if (!glfwInit())    
@@ -248,6 +258,7 @@ renderer::renderer() {
         assert(false);
 
     glfwMakeContextCurrent(m_window);
+    glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
     // loading glfw functions with glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         assert(false);
@@ -256,7 +267,7 @@ renderer::renderer() {
     m_shader = new shader("../assets/shaders/vertex.glsl", "../assets/shaders/pixel.glsl");
 
     m_shader->bind();
-    std::string model_path = "../assets/models/Cube/Cube.gltf";
+    std::string model_path = "../assets/models/DamagedHelmet/glTF/DamagedHelmet.gltf";
     if (!loadModel(model, model_path.c_str())) {
         assert(false);
     }
@@ -280,14 +291,28 @@ renderer::renderer() {
 }
 
 void renderer::render() {
+
     while (!glfwWindowShouldClose(m_window))
     {
+        glEnable(GL_DEPTH_TEST);
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //glBindVertexArray(m_vao);
+        {
+            glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+            glm::mat4 view = glm::mat4(1.0f);
+            glm::mat4 projection = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * glm::scale(view, glm::vec3(0.5, 0.5, 0.5));
+            view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+            projection = glm::perspective(glm::radians(45.0f), (float)1280 / (float)720, 0.1f, 100.0f);
+
+            m_shader->bind();
+            m_shader->set_uniform_mat4("u_model", model);
+            m_shader->set_uniform_mat4("u_view", view);
+            m_shader->set_uniform_mat4("u_projection", projection);
+        }
+
         drawModel(vaoAndEbos, model);
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
