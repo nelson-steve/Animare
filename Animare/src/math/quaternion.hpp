@@ -62,7 +62,7 @@ public:
     friend bool operator!=(const quaternion& a, const quaternion& b) {
         return !(a == b);
     }
-    quaternion mix(const quaternion& from, const quaternion& to, real t) {
+    static quaternion mix(const quaternion& from, const quaternion& to, real t) {
         return from * (1.0f - t) + to * t;
     }
     static quaternion nlerp(const quaternion& from, const quaternion& to, float t) {

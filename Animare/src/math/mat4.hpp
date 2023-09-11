@@ -2,7 +2,7 @@
 
 #include "vec4.hpp"
 #include "vec3.hpp"
-#include "../defines.hpp"
+#include "defines.hpp"
 
 #include <assert.h>
 

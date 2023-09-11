@@ -4,4 +4,5 @@ class camera {
 public:
     camera();
 private:
+
 };
