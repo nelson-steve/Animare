@@ -29,7 +29,7 @@ camera::camera(GLFWwindow* window, real fov, real near_clip, real far_clip)
 void camera::update(GLFWwindow* window, real ts)
 {
     process_input(window, ts);
-    if (mouse_pos_changed) {
+    if (mouse_pos_changed && (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)) {
         if (first_mouse)
         {
             lastX = xpos;
@@ -90,4 +90,8 @@ void camera::process_input(GLFWwindow* window, real delta_time)
         m_pos -= glm::normalize(glm::cross(m_front, m_up)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         m_pos += glm::normalize(glm::cross(m_front, m_up)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        m_pos += m_up * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        m_pos -= m_up * cameraSpeed;
 }

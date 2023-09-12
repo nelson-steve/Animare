@@ -23,7 +23,7 @@ private:
     glm::vec3 m_pos = glm::vec3(0.0f, 0.0f, 3.0f);
     glm::vec3 m_front = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 m_up = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 m_right = glm::vec3(1.0f);
+    glm::vec3 m_right = glm::vec3(1.0f, 0.0, 0.0);
     glm::vec3 m_world_up = glm::vec3(1.0f);
     real m_yaw = -90.0f;
     real m_pitch = 0.0f;
