@@ -1,7 +1,6 @@
 #include "renderer.hpp"
 
 #include "bezier.hpp"
-#include "mesh.hpp"
 
 #include <assert.h>
 #include <vector>
@@ -19,8 +18,6 @@ float vertices[] = {
       0.5f, -0.5f, 0.0f,
       0.0f,  0.5f, 0.0f
 };
-
-static mesh* m_mesh;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -44,6 +41,7 @@ renderer::renderer() {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         assert(false);
 
+    m_camera = new camera(m_window);
 
     // creating shaders
     m_shader = new shader("../assets/shaders/vertex.glsl", "../assets/shaders/pixel.glsl");
@@ -84,24 +82,30 @@ void renderer::render() {
 
     while (!glfwWindowShouldClose(m_window))
     {
+        real current_frame = static_cast<float>(glfwGetTime());
+        delta_time = current_frame - last_frame;
+        last_frame = current_frame;
+
+        m_camera->update(m_window, delta_time);
+
         glEnable(GL_DEPTH_TEST);
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         {
             glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-            glm::mat4 view = glm::mat4(1.0f);
-            glm::mat4 projection = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * glm::scale(view, glm::vec3(0.5, 0.5, 0.5));
-            //model = glm::scale(view, glm::vec3(0.5, 0.5, 0.5));
-            view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-            //view = glm::scale(view, glm::vec3(0.5, 0.5, 0.5));
-            projection = glm::perspective(glm::radians(45.0f), (float)1280 / (float)720, 0.1f, 100.0f);
+            //glm::mat4 view = glm::mat4(1.0f);
+            //glm::mat4 projection = glm::mat4(1.0f);
+            //model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * glm::scale(view, glm::vec3(0.5, 0.5, 0.5));
+            ////model = glm::scale(view, glm::vec3(0.5, 0.5, 0.5));
+            //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+            ////view = glm::scale(view, glm::vec3(0.5, 0.5, 0.5));
+            //projection = glm::perspective(glm::radians(45.0f), (float)1280 / (float)720, 0.1f, 100.0f);
 
             m_shader->bind();
             m_shader->set_uniform_mat4("u_model", model);
-            m_shader->set_uniform_mat4("u_view", view);
-            m_shader->set_uniform_mat4("u_projection", projection);
+            m_shader->set_uniform_mat4("u_view", m_camera->get_view_matrix());
+            m_shader->set_uniform_mat4("u_projection", m_camera->get_projection_matrix());
         }
 
         //glBindVertexArray(m_vao);
@@ -116,5 +120,7 @@ void renderer::render() {
 
 void renderer::destroy() {
     delete m_shader;
+    delete m_mesh;
+    delete m_camera;
     glfwTerminate();
 }

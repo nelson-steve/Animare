@@ -1,3 +1,4 @@
-﻿  renderer.cpp
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(110,49): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+﻿  camera.cpp
+C:\dev\Animare\Animare\src\renderer\camera.cpp(12,12): warning C4244: '=': conversion from 'double' to 'real', possible loss of data
+C:\dev\Animare\Animare\src\renderer\camera.cpp(13,12): warning C4244: '=': conversion from 'double' to 'real', possible loss of data
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe
