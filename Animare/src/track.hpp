@@ -9,42 +9,62 @@
 
 #include <vector>
 
-enum interpolation {
-    constant,
-    linear,
-    cubic
-};
-
-template<typename T, int n>
 class track {
 public:
-    track();
-    
-    void resize(uint32_t size);
-    uint32_t get_size();
-    interpolation get_interpolation();
-    void set_interpolation(interpolation interp);
-    real get_start_time();
-    real get_end_time();
-    T Sample(float time, bool looping);
-    frame<n>& operator[](unsigned int index);
+    enum class interpolation {
+        constant,
+        linear,
+        cubic
+    };
+    track() = delete;
+    track(interpolation interp) {
+        m_interpolation = interp;
+    }
+    void resize(uint32_t size) {
+        m_frames.resize(size);
+    }
+    uint32_t get_size() {
+        return m_frames.size();
+    }
+    interpolation get_interpolation() {
+        return m_interpolation;
+    }
+    void set_interpolation(interpolation interp) {
+        m_interpolation = interp;
+    }
+    real get_start_time() {
+        return m_start_time;
+    }
+    real get_end_time() {
+        return m_end_time;
+    }
+    real Sample(float time, bool looping) {
 
-protected:
-    T SampleConstant(float time, bool looping);
-    T SampleLinear(float time, bool looping);
-    T SampleCubic(float time, bool looping);
-    T Hermite(float time, const T& p1, const T& s1, const T& p2, const T& s2);
-    int FrameIndex(float time, bool looping);
-    float AdjustTimeToFitTrack(float t, bool loop);
-    T Cast(float* value);
-protected:
-    std::vector<frame<n>> m_frames;
+    }
+    frame& operator[](unsigned int index) {
+        if (!m_frames.empty()) {
+            return m_frames[index];
+        }
+        else
+        {
+            assert(false);
+        }
+    }
+
+//protected:
+//    T SampleConstant(float time, bool looping);
+//    T SampleLinear(float time, bool looping);
+//    T SampleCubic(float time, bool looping);
+//    T Hermite(float time, const T& p1, const T& s1, const T& p2, const T& s2);
+//    int FrameIndex(float time, bool looping);
+//    float AdjustTimeToFitTrack(float t, bool loop);
+//    T Cast(float* value);
+private:
+    real m_start_time = 0.0f;
+    real m_end_time = 0.0f;
+    std::vector<frame> m_frames;
     interpolation m_interpolation;
 };
-
-typedef track<float, 1> ScalarTrack;
-typedef track<glm::vec3, 3> VectorTrack;
-typedef track<glm::quat, 4> QuaternionTrack;
 
 namespace track_helper {
     inline float Interpolate(float a, float b, float t) {
@@ -57,7 +77,7 @@ namespace track_helper {
         float t) {
         quaternion result = quaternion::mix(a, b, t);
         if (quaternion::dot(a, b) < 0) { // Neighborhood
-            result = quaternion::mix(a, -b, t);
+            //result = quaternion::mix(a, -b, t);
         }
         return quaternion::normalized(result); //NLerp, not slerp
     }

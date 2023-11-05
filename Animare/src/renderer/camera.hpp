@@ -7,7 +7,7 @@
 
 class camera {
 public:
-    camera(GLFWwindow* window, real fov = 45.0f, real near_clip = 0.1f, real far_clip = 1000.0f);
+    camera(GLFWwindow* window, real fov = 60.0f, real near_clip = 0.1f, real far_clip = 1000.0f);
 
     void update(GLFWwindow* window, real ts);
     void process_input(GLFWwindow* window, real delta_time);

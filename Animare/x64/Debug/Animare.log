@@ -1,4 +1,7 @@
-﻿  camera.cpp
+﻿  main.cpp
+  camera.cpp
 C:\dev\Animare\Animare\src\renderer\camera.cpp(12,12): warning C4244: '=': conversion from 'double' to 'real', possible loss of data
 C:\dev\Animare\Animare\src\renderer\camera.cpp(13,12): warning C4244: '=': conversion from 'double' to 'real', possible loss of data
+  renderer.cpp
+  Generating Code...
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe

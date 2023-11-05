@@ -107,8 +107,7 @@ void bindMesh(std::map<int, GLuint>& vbos, tinygltf::Model& model, tinygltf::Mes
 
         for (auto& attrib : primitive.attributes) {
             tinygltf::Accessor accessor = model.accessors[attrib.second];
-            int byteStride =
-                accessor.ByteStride(model.bufferViews[accessor.bufferView]);
+            int byteStride = accessor.ByteStride(model.bufferViews[accessor.bufferView]);
             glBindBuffer(GL_ARRAY_BUFFER, vbos[accessor.bufferView]);
 
             int size = 1;
