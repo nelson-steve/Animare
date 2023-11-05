@@ -24,6 +24,12 @@ public:
         GLuint location = glGetUniformLocation(m_program_handle, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
+
+    void set_uniform_vec3(const std::string& name, const glm::vec3& vec)
+    {
+        GLuint location = glGetUniformLocation(m_program_handle, name.c_str());
+        glUniform3f(location, vec[0], vec[1], vec[2]);
+    }
 private:
     uint32_t m_program_handle = 0;
     uint32_t m_vertex_handle = 0;
