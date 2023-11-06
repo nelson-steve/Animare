@@ -4,6 +4,7 @@
 #include "vec3.hpp"
 #include "defines.hpp"
 
+#include <iostream>
 #include <assert.h>
 
 #define MAT4_DOT(a_row, b_col) \
@@ -264,7 +265,7 @@ public:
         if (r == vec3(0, 0, 0)) {
             return mat4(); // Error
         }
-        vec3::normalize(r);
+        r.normalize();
         vec3 u = vec3::normalized(vec3::cross(f, r)); // Right handed
         vec3 t = vec3(
             -vec3::dot(r, position),

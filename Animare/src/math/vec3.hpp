@@ -41,11 +41,11 @@ public:
 	}
 	bool operator==(const vec3& r) {
 		vec3 diff(vec3(m_x, m_y, m_z) - r);
-		return len_square(diff) < VEC3_EPSILON;
+		return diff.len_square() < VEC3_EPSILON;
 	}
 	friend bool operator==(const vec3& l, const vec3& r) {
 		vec3 diff(l - r);
-		return len_square(diff) < VEC3_EPSILON;
+		return diff.len_square() < VEC3_EPSILON;
 	}
 	bool operator!=(const vec3& r) {
 		return !(vec3(m_x, m_y, m_z) == r);
@@ -64,8 +64,13 @@ public:
 		return  lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z();
 	}
 	// length square
-	static real len_square(const vec3& vec) {
-		return vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
+	real len_square() const {
+		return m_x * m_x + m_y * m_y + m_z * m_z;
+	}
+	bool is_normalized() const {
+		real value = (sqrtf(get().len_square()));
+		value = value - 1;
+		return (value < FLOAT_ESPISON);
 	}
 	// length
 	// length(vec) = sqrt(x*x + y*y + z*z)
@@ -78,13 +83,13 @@ public:
 		return sqrtf(lenSquare);
 	}
 	// distance between two vectors
-	real distance(const vec3& lhs, const vec3& rhs) const {
-		len(lhs - rhs);
+	static real distance(const vec3& lhs, const vec3& rhs) {
+		return len(lhs - rhs);
 	}
 	// normalizing a vector
 	// normal / unit vector -> a vector with a length of '1'
 	// normalizes the vector given
-	static void normalize(vec3& vec);
+	void normalize();
 	// creates a new normalized vector from the given vector and returns it
 	static vec3 normalized(const vec3& vec);
 	// angle between two vectors
@@ -92,11 +97,10 @@ public:
     // cosθ = A.B / |A||B|    (if A and B are not unit vectors)
 	// θ = cos-1 A.B / |A||B|
 	// gives the angle in radians
-	real angle(const vec3& lhs, const vec3& rhs) const;
+	static real angle(const vec3& lhs, const vec3& rhs);
 	// gives the angle in degrees
-	real angle_in_degrees(const vec3& lhs, const vec3& rhs) const {
-		// multiply by 0.0174533 to convert degrees to radians
-		return angle(lhs, rhs) * 57.2958f; // converting angle from raidans to degrees
+	static real angle_in_degrees(const vec3& lhs, const vec3& rhs) {
+		return angle(lhs, rhs) * 57.29577951f; //(180/PI) converting angle from raidans to degrees
 	}
 	//     /\
 	//     /
@@ -109,8 +113,9 @@ public:
 	// if the vector being projected onto is a unit vector the the lenth of A in direction
 	// of B can be found using a simple dot(A, B)
 	// if neither is a unit vector then the dot(A, B) needs to be divided by length of B
-	vec3 project(const vec3& lhs, const vec3& rhs) const;
-	vec3 reject(const vec3& lhs, const vec3& rhs) const;
+	// lhs is projecting on rhs
+	static vec3 project(const vec3& lhs, const vec3& rhs);
+	static vec3 reject(const vec3& lhs, const vec3& rhs);
 	// vector reflection - bounce reflection
 	//      B
 	//     /\  /|
@@ -148,7 +153,7 @@ public:
 	inline real x() const { return m_x; }
 	inline real y() const { return m_y; }
 	inline real z() const { return m_z; }
-	inline vec3 get() const { return vec3(m_x, m_y, m_z); }
+	inline const vec3& get() const { return vec3(m_x, m_y, m_z); }
 
 	// setters
 	inline void set_x(real x) { m_x = x; }

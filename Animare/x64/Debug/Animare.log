@@ -1,5 +1,2 @@
-﻿  renderer.cpp
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(37,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(37,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(154,33): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+﻿  main.cpp
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe

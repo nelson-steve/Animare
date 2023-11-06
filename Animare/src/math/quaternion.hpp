@@ -118,9 +118,9 @@ public:
     static float dot(const quaternion& a, const quaternion& b) {
         return a.x() * b.x() + a.y() * b.y() + a.z() * b.z() + a.w() * b.w();
     }
-    static float dot(const quaternion& a, const quaternion& b) {
-        return a.x() * b.x() + a.y() * b.y() + a.z() * b.z() + a.w() * b.w();
-    }
+    //static float dot(const quaternion& a, const quaternion& b) {
+    //    return a.x() * b.x() + a.y() * b.y() + a.z() * b.z() + a.w() * b.w();
+    //}
     float len(const quaternion& q) {
         float lenSq = q.x() * q.x() + q.y() * q.y() + q.z() * q.z() + q.w() * q.w();
         if (lenSq < QUAT_EPSILON) {

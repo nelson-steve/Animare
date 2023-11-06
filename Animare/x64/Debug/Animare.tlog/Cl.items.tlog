@@ -1,6 +1,7 @@
 C:\dev\Animare\Animare\dependencies\glad\src\glad.c;C:\dev\Animare\Animare\x64\Debug\glad.obj
 C:\dev\Animare\Animare\dependencies\glm\glm\detail\glm.cpp;C:\dev\Animare\Animare\x64\Debug\glm.obj
 C:\dev\Animare\Animare\dependencies\tinygltf\tiny_gltf.cc;C:\dev\Animare\Animare\x64\Debug\tiny_gltf.obj
+C:\dev\Animare\Animare\src\animation\track.cpp;C:\dev\Animare\Animare\x64\Debug\track.obj
 C:\dev\Animare\Animare\src\main.cpp;C:\dev\Animare\Animare\x64\Debug\main.obj
 C:\dev\Animare\Animare\src\math\vec3.cpp;C:\dev\Animare\Animare\x64\Debug\vec3.obj
 C:\dev\Animare\Animare\src\renderer\camera.cpp;C:\dev\Animare\Animare\x64\Debug\camera.obj

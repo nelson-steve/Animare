@@ -2,13 +2,13 @@
 
 #include "defines.hpp"
 
-void vec3::normalize(vec3& vec) {
-	real len_square = vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z();
+void vec3::normalize() {
+	real len_square = get().len_square();
 	if (len_square < VEC3_EPSILON) { return; }
 	real inv_length = 1.0f / sqrtf(len_square);
-	vec.set_x(vec.x() * inv_length);
-	vec.set_y(vec.y() * inv_length);
-	vec.set_z(vec.z() * inv_length);
+	m_x = m_x * inv_length;
+	m_y = m_y * inv_length;
+	m_z = m_z * inv_length;
 }
 
 vec3 vec3::normalized(const vec3& vec) {
@@ -23,22 +23,23 @@ vec3 vec3::normalized(const vec3& vec) {
 	return new_vec;
 }
 
-real vec3::angle(const vec3& lhs, const vec3& rhs) const {
-	real square_mag_left = lhs.x() * lhs.x() + lhs.y() * lhs.y() + lhs.z() * lhs.z();
-	real square_mag_right = rhs.x() * lhs.x() + lhs.y() * lhs.y() + lhs.z() * lhs.z();
+real vec3::angle(const vec3& lhs, const vec3& rhs) {
+	real square_mag_left = lhs.len_square();
+	real square_mag_right = rhs.len_square();
 	if (square_mag_left < VEC3_EPSILON || square_mag_right < VEC3_EPSILON) {
 		return 0.0f;
 	}
-	real dot = lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z();
-	real len = sqrtf(square_mag_left) * sqrtf(square_mag_right);
-	return acosf(dot / len);
+	real dot = vec3::dot(lhs, rhs);
+	real sqrt_left = sqrtf(square_mag_left);
+	real sqrt_right = sqrtf(square_mag_right);
+	real value = dot / (sqrt_left * sqrt_right);
+	real result = acosf(value);
+	return result;
 }
 
-vec3 vec3::project(const vec3& lhs, const vec3& rhs) const {
+vec3 vec3::project(const vec3& lhs, const vec3& rhs) {
 	real scale;
-	// TODO: implement is_normal function here
-	//if (rhs.is_normal()) {
-	if (false) {
+	if (rhs.is_normalized()) {
 		scale = dot(lhs, rhs);
 	}
 	else {
@@ -48,10 +49,10 @@ vec3 vec3::project(const vec3& lhs, const vec3& rhs) const {
 		}
 		scale = dot(lhs, rhs) / magnitude_rhs;
 	}
-	return rhs * scale;
+	return vec3(vec3::normalized(rhs)) * scale;
 }
 
-vec3 vec3::reject(const vec3& lhs, const vec3& rhs) const {
+vec3 vec3::reject(const vec3& lhs, const vec3& rhs) {
 	return lhs - project(lhs, rhs);
 }
 

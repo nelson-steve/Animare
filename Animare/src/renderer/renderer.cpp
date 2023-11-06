@@ -1,6 +1,6 @@
 #include "renderer.hpp"
 
-#include "bezier.hpp"
+#include "animation/bezier.hpp"
 
 #include <assert.h>
 #include <vector>
