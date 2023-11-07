@@ -1,5 +1,2 @@
 ﻿  main.cpp
-  vec3.cpp
-  Generating Code...
-C:\dev\Animare\Animare\src\math\vec3.hpp(156): warning C4172: returning address of local variable or temporary
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe

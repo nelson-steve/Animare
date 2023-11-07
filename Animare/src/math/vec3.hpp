@@ -87,7 +87,7 @@ public:
 		return len(lhs - rhs);
 	}
 	// normalizing a vector
-	// normal / unit vector -> a vector with a length of '1'
+	// normal / unit vector -> a vector with a length of '1.0'
 	// normalizes the vector given
 	void normalize();
 	// creates a new normalized vector from the given vector and returns it

@@ -9,6 +9,8 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/projection.hpp>
 
+void test_vec3_class();
+
 void test_vec3_minus(const glm::vec3& first, const glm::vec3& second) {
     std::cout << "_____ MINUS _____" << std::endl;
     vec3 one(first.x, first.y, first.z);
@@ -270,15 +272,114 @@ void test_vec3_slerp(const glm::vec3& first, const glm::vec3& second) {
     std::cout << result.x() << " " << result.y() << " " << result.z() << std::endl;
 }
 
+// ------------------------------------------------------------------------------------
+
+void test_vec2_minus(const glm::vec2& first, const glm::vec2& second) {
+    std::cout << "_____ MINUS _____" << std::endl;
+    vec2 one(first.x, first.y);
+    vec2 two(second.x, second.y);
+
+    glm::vec2 glm_one = first;
+    glm::vec2 glm_two = second;
+
+    vec2 result = one - two;
+    glm::vec2 glm_result = glm_one - glm_two;
+
+    assert(glm_result == glm::vec2(result.x(), result.y()));
+
+    std::cout << glm_result.x << " " << glm_result.y << " " << " = ";
+    std::cout << result.x() << " " << result.y() << " " << std::endl;
+}
+
+void test_vec2_plus(const glm::vec2& first, const glm::vec2& second) {
+    std::cout << "_____ PLUS _____" << std::endl;
+    vec2 one(first.x, first.y);
+    vec2 two(second.x, second.y);
+
+    glm::vec2 glm_one = first;
+    glm::vec2 glm_two = second;
+
+    vec2 result = one + two;
+    glm::vec2 glm_result = glm_one + glm_two;
+
+    assert(glm_result == glm::vec2(result.x(), result.y()));
+
+    std::cout << glm_result.x << " " << glm_result.y << " " << " = ";
+    std::cout << result.x() << " " << result.y() << " " << std::endl;
+}
+
+void test_vec2_multiply(const glm::vec2& first, const glm::vec2& second) {
+    std::cout << "_____ MULTIPLY _____" << std::endl;
+    vec2 one(first.x, first.y);
+    vec2 two(second.x, second.y);
+
+    glm::vec2 glm_one = first;
+    glm::vec2 glm_two = second;
+
+    vec2 result = one * two;
+    glm::vec2 glm_result = glm_one * glm_two;
+
+    assert(glm_result == glm::vec2(result.x(), result.y()));
+
+    std::cout << glm_result.x << " " << glm_result.y << " " << " = ";
+    std::cout << result.x() << " " << result.y() << " " << std::endl;
+}
+
+void test_vec2_dot(const glm::vec2& first, const glm::vec2& second) {
+    std::cout << "_____ DOT PRODUCT _____" << std::endl;
+    vec2 one(first.x, first.y);
+    vec2 two(second.x, second.y);
+
+    glm::vec2 glm_one = first;
+    glm::vec2 glm_two = second;
+
+    real result = vec2::dot(one, two);
+    real glm_result = glm::dot(glm_one, glm_two);
+
+    assert(glm_result == result);
+
+    std::cout << glm_result << " = ";
+    std::cout << result << std::endl;
+}
+
 int main(int argc, char** argv) {
+    test_vec3_class();
+
+    test_vec2_minus(glm::vec2(3, 4), glm::vec2(5, 6));
+    test_vec2_minus(glm::vec2(45, 23), glm::vec2(34, 34));
+    test_vec2_minus(glm::vec2(333, 45), glm::vec2(543, 6345));
+    std::cout << std::endl;
+
+    test_vec2_plus(glm::vec2(3, 4), glm::vec2(5, 6));
+    test_vec2_plus(glm::vec2(45, 23), glm::vec2(34, 34));
+    test_vec2_plus(glm::vec2(333, 45), glm::vec2(543, 6345));
+    std::cout << std::endl;
+
+    test_vec2_multiply(glm::vec2(3, 4), glm::vec2(5, 6));
+    test_vec2_multiply(glm::vec2(45, 23), glm::vec2(34, 34));
+    test_vec2_multiply(glm::vec2(333, 45), glm::vec2(543, 6345));
+    std::cout << std::endl;
+
+    test_vec2_dot(glm::vec2(3, 4), glm::vec2(5, 6));
+    test_vec2_dot(glm::vec2(45, 23), glm::vec2(34, 34));
+    test_vec2_dot(glm::vec2(333, 45), glm::vec2(543, 6345));
+    std::cout << std::endl;
+
+    //renderer* r = new renderer();
+    //r->render();
+    //r->destroy();
+    //delete r;
+}
+
+void test_vec3_class() {
     test_vec3_minus(glm::vec3(3, 4, 5), glm::vec3(5, 6, 7));
     test_vec3_minus(glm::vec3(45, 23, 246), glm::vec3(34, 34, 53));
-    test_vec3_minus(glm::vec3(333, 45, 534), glm::vec3(543, 6345,347));
-    std::cout<<std::endl;
+    test_vec3_minus(glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
+    std::cout << std::endl;
 
     test_vec3_plus(glm::vec3(3, 4, 5), glm::vec3(5, 6, 7));
     test_vec3_plus(glm::vec3(45, 23, 246), glm::vec3(34, 34, 53));
-    test_vec3_plus (glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
+    test_vec3_plus(glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
     std::cout << std::endl;
 
     test_vec3_multiply(glm::vec3(3, 4, 5), glm::vec3(5, 6, 7));
@@ -339,9 +440,5 @@ int main(int argc, char** argv) {
     test_vec3_slerp(glm::vec3(3, 4, 5), glm::vec3(5, 6, 7));
     test_vec3_slerp(glm::vec3(45, 23, 246), glm::vec3(34, 34, 53));
     test_vec3_slerp(glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
-    std::cout << std::endl;    
-    //renderer* r = new renderer();
-    //r->render();
-    //r->destroy();
-    //delete r;
+    std::cout << std::endl;
 }
