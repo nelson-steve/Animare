@@ -1,2 +1,26 @@
-﻿  main.cpp
+﻿  glad.c
+  glm.cpp
+  tiny_gltf.cc
+C:\dev\Animare\Animare\dependencies\tinygltf\tiny_gltf.h(3037,17): warning C4018: '>=': signed/unsigned mismatch
+C:\dev\Animare\Animare\dependencies\tinygltf\tiny_gltf.h(3132,17): warning C4018: '>=': signed/unsigned mismatch
+C:\dev\Animare\Animare\dependencies\tinygltf\tiny_gltf.h(5185,59): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  track.cpp
+C:\dev\Animare\Animare\src\animation\track.hpp(27,29): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\Animare\Animare\src\animation\track.cpp(4,12): warning C4305: 'return': truncation from 'double' to 'real'
+  main.cpp
+  vec3.cpp
+  camera.cpp
+  mesh.cpp
+C:\dev\Animare\Animare\src\renderer\mesh.cpp(38,53): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\dev\Animare\Animare\src\renderer\mesh.cpp(93,14): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  renderer.cpp
+C:\dev\Animare\Animare\src\renderer\renderer.cpp(37,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\dev\Animare\Animare\src\renderer\renderer.cpp(37,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\dev\Animare\Animare\src\renderer\renderer.cpp(152,33): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+  shader.cpp
+  Generating Code...
+C:\dev\Animare\Animare\src\math\vec3.hpp(156): warning C4172: returning address of local variable or temporary
+C:\dev\Animare\Animare\src\animation\track.cpp(20): warning C4172: returning address of local variable or temporary
+C:\dev\Animare\Animare\src\animation\track.cpp(15): warning C4172: returning address of local variable or temporary
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe
