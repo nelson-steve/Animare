@@ -400,21 +400,7 @@ void test_vec4_multiply(const glm::vec4& first, const glm::vec4& second) {
 int main(int argc, char** argv) {
     test_vec3_class();
     test_vec2_class();
-
-    test_vec4_minus(glm::vec4(3, 4, 5, 1), glm::vec4(5, 6, 7, 1));
-    test_vec4_minus(glm::vec4(45, 23, 246, 1), glm::vec4(34, 34, 53, 1));
-    test_vec4_minus(glm::vec4(333, 45, 534, 1), glm::vec4(543, 6345, 347, 1));
-    std::cout << std::endl;
-
-    test_vec4_plus(glm::vec4(3, 4, 5, 1), glm::vec4(5, 6, 7, 1));
-    test_vec4_plus(glm::vec4(45, 23, 246, 1), glm::vec4(34, 34, 53, 1));
-    test_vec4_plus(glm::vec4(333, 45, 534, 1), glm::vec4(543, 6345, 347, 1));
-    std::cout << std::endl;
-
-    test_vec4_multiply(glm::vec4(3, 4, 5, 1), glm::vec4(5, 6, 7, 1));
-    test_vec4_multiply(glm::vec4(45, 23, 246, 1), glm::vec4(34, 34, 53, 1));
-    test_vec4_multiply(glm::vec4(333, 45, 534, 1), glm::vec4(543, 6345, 347, 1));
-    std::cout << std::endl;
+    test_vec4_class();
 
     //renderer* r = new renderer();
     //r->render();
@@ -513,5 +499,22 @@ void test_vec2_class() {
     test_vec2_dot(glm::vec2(3, 4), glm::vec2(5, 6));
     test_vec2_dot(glm::vec2(45, 23), glm::vec2(34, 34));
     test_vec2_dot(glm::vec2(333, 45), glm::vec2(543, 6345));
+    std::cout << std::endl;
+}
+
+void test_vec4_class() {
+    test_vec4_minus(glm::vec4(3, 4, 5, 1), glm::vec4(5, 6, 7, 1));
+    test_vec4_minus(glm::vec4(45, 23, 246, 1), glm::vec4(34, 34, 53, 1));
+    test_vec4_minus(glm::vec4(333, 45, 534, 1), glm::vec4(543, 6345, 347, 1));
+    std::cout << std::endl;
+
+    test_vec4_plus(glm::vec4(3, 4, 5, 1), glm::vec4(5, 6, 7, 1));
+    test_vec4_plus(glm::vec4(45, 23, 246, 1), glm::vec4(34, 34, 53, 1));
+    test_vec4_plus(glm::vec4(333, 45, 534, 1), glm::vec4(543, 6345, 347, 1));
+    std::cout << std::endl;
+
+    test_vec4_multiply(glm::vec4(3, 4, 5, 1), glm::vec4(5, 6, 7, 1));
+    test_vec4_multiply(glm::vec4(45, 23, 246, 1), glm::vec4(34, 34, 53, 1));
+    test_vec4_multiply(glm::vec4(333, 45, 534, 1), glm::vec4(543, 6345, 347, 1));
     std::cout << std::endl;
 }
