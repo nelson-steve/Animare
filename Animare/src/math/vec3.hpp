@@ -141,7 +141,7 @@ public:
 	// slerp is constant in velocity
 	// slerp is only used when constant interpolation velocity is required
 	// slerp(A,B,t) = (sin(1-t)θ/sinθ)A + (sin(tθ)/sinθ)B
-	vec3 slerp(const vec3& start, const vec3& end, real t) const;
+	static vec3 slerp(const vec3& start, const vec3& end, real t);
 	// normalized linear interpolation - nlerp
 	// nlerp is normalized lerp
 	// nlerp is not constant in velocity

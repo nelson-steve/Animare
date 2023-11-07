@@ -186,7 +186,85 @@ void test_vec3_project(const glm::vec3& first, const glm::vec3& second) {
         value = value * -1;
     }
     assert(value < 0.01);
-    //assert(glm_result == glm::vec3(result.x(), result.y(), result.z()));
+
+    std::cout << glm_result.x << " " << glm_result.y << " " << glm_result.z << " = ";
+    std::cout << result.x() << " " << result.y() << " " << result.z() << std::endl;
+}
+
+void test_vec3_reflect(const glm::vec3& first, const glm::vec3& second) {
+    std::cout << "_____ REFLECT _____" << std::endl;
+    vec3 one(first.x, first.y, first.z);
+    vec3 two(second.x, second.y, second.z);
+
+
+    glm::vec3 glm_one = first;
+    glm::vec3 glm_two = second;
+
+    //two.normalize();
+    vec3 result = vec3::reflect(one, two);
+    glm_two = glm::normalize(glm_two);
+    glm::vec3 glm_result = glm::reflect(glm_one, glm_two);
+
+    real res_glm = vec3(glm_result.x, glm_result.y, glm_result.z).len_square();
+    real res = result.len_square();
+    real value = res - res_glm;
+    if (value < 0) {
+        value = value * -1;
+    }
+    assert(value < 0.1);
+
+    std::cout << glm_result.x << " " << glm_result.y << " " << glm_result.z << " = ";
+    std::cout << result.x() << " " << result.y() << " " << result.z() << std::endl;
+}
+
+void test_vec3_cross(const glm::vec3& first, const glm::vec3& second) {
+    std::cout << "_____ CROSS PRODUCT _____" << std::endl;
+    vec3 one(first.x, first.y, first.z);
+    vec3 two(second.x, second.y, second.z);
+
+    glm::vec3 glm_one = first;
+    glm::vec3 glm_two = second;
+
+    vec3 result = vec3::cross(one, two);
+    glm::vec3 glm_result = glm::cross(glm_one, glm_two);
+
+    assert(glm_result == glm::vec3(result.x(), result.y(), result.z()));
+    
+    std::cout << glm_result.x << " " << glm_result.y << " " << glm_result.z << " = ";
+    std::cout << result.x() << " " << result.y() << " " << result.z() << std::endl;
+}
+
+void test_vec3_lerp(const glm::vec3& first, const glm::vec3& second) {
+    std::cout << "_____ LERP _____" << std::endl;
+    vec3 one(first.x, first.y, first.z);
+    vec3 two(second.x, second.y, second.z);
+
+    glm::vec3 glm_one = first;
+    glm::vec3 glm_two = second;
+
+    vec3 result = vec3::lerp(one, two, 0.5f);
+
+    std::cout << result.x() << " " << result.y() << " " << result.z() << std::endl;
+}
+
+void test_vec3_slerp(const glm::vec3& first, const glm::vec3& second) {
+    std::cout << "_____ SLERP _____" << std::endl;
+    vec3 one(first.x, first.y, first.z);
+    vec3 two(second.x, second.y, second.z);
+
+    glm::vec3 glm_one = first;
+    glm::vec3 glm_two = second;
+
+    vec3 result = vec3::slerp(one, two, 0.5);
+    glm::vec3 glm_result = glm::slerp(glm::normalize(glm_one), glm::normalize(glm_two), 0.5f);
+
+    real res_glm = vec3(glm_result.x, glm_result.y, glm_result.z).len_square();
+    real res = result.len_square();
+    real value = res - res_glm;
+    if (value < 0) {
+        value = value * -1;
+    }
+    assert(value < 0.000001);
 
     std::cout << glm_result.x << " " << glm_result.y << " " << glm_result.z << " = ";
     std::cout << result.x() << " " << result.y() << " " << result.z() << std::endl;
@@ -243,6 +321,25 @@ int main(int argc, char** argv) {
     test_vec3_project(glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
     std::cout << std::endl;
 
+    test_vec3_reflect(glm::vec3(3, 4, 5), glm::vec3(5, 6, 7));
+    test_vec3_reflect(glm::vec3(45, 23, 246), glm::vec3(34, 34, 53));
+    test_vec3_reflect(glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
+    std::cout << std::endl;
+
+    test_vec3_cross(glm::vec3(3, 4, 5), glm::vec3(5, 6, 7));
+    test_vec3_cross(glm::vec3(45, 23, 246), glm::vec3(34, 34, 53));
+    test_vec3_cross(glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
+    std::cout << std::endl;
+
+    test_vec3_lerp(glm::vec3(3, 4, 5), glm::vec3(5, 6, 7));
+    test_vec3_lerp(glm::vec3(45, 23, 246), glm::vec3(34, 34, 53));
+    test_vec3_lerp(glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
+    std::cout << std::endl;
+
+    test_vec3_slerp(glm::vec3(3, 4, 5), glm::vec3(5, 6, 7));
+    test_vec3_slerp(glm::vec3(45, 23, 246), glm::vec3(34, 34, 53));
+    test_vec3_slerp(glm::vec3(333, 45, 534), glm::vec3(543, 6345, 347));
+    std::cout << std::endl;    
     //renderer* r = new renderer();
     //r->render();
     //r->destroy();

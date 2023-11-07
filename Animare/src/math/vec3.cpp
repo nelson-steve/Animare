@@ -40,16 +40,20 @@ real vec3::angle(const vec3& lhs, const vec3& rhs) {
 vec3 vec3::project(const vec3& lhs, const vec3& rhs) {
 	real scale;
 	if (rhs.is_normalized()) {
+		// More accurate if normalized 'rhs' is given
 		scale = dot(lhs, rhs);
+		return rhs * scale;
 	}
 	else {
+		// This gives reflection for normalized vector without having to explicitly normalize the 'rhs'
+		// Result is slightly inaccurate but faster
 		real magnitude_rhs = len(rhs);
 		if (magnitude_rhs < VEC3_EPSILON) {
 			return vec3();
 		}
 		scale = dot(lhs, rhs) / magnitude_rhs;
+		return vec3::normalized(rhs) * scale;
 	}
-	return vec3(vec3::normalized(rhs)) * scale;
 }
 
 vec3 vec3::reject(const vec3& lhs, const vec3& rhs) {
@@ -57,13 +61,20 @@ vec3 vec3::reject(const vec3& lhs, const vec3& rhs) {
 }
 
 vec3 vec3::reflect(const vec3& lhs, const vec3& rhs) {
-	float magnitude_rhs = len(rhs);
-	if (magnitude_rhs < VEC3_EPSILON) {
-		return vec3();
+	if (rhs.is_normalized()) {
+		real dot = vec3::dot(lhs, rhs);
+		vec3 parallel = rhs * dot;
+		return lhs - (parallel * 2.0f);
 	}
-	float scale = dot(lhs, rhs) / magnitude_rhs;
-	vec3 projection_rhs = rhs * (scale * 2);
-	return lhs - projection_rhs;
+	else {
+		real magnitude_rhs = rhs.len_square();
+		if (magnitude_rhs < VEC3_EPSILON) {
+			return vec3();
+		}
+		float scale = dot(lhs, rhs) / magnitude_rhs;
+		vec3 project = rhs * (scale * 2);
+		return lhs - project;
+	}
 }
 
 vec3 vec3::cross(const vec3& lhs, const vec3& rhs) {
@@ -75,14 +86,10 @@ vec3 vec3::cross(const vec3& lhs, const vec3& rhs) {
 }
 
 vec3 vec3::lerp(const vec3& start, const vec3& end, real t) {
-	return vec3(
-		start.x() + (end.x() - start.x()) * t,
-		start.y() + (end.y() - start.y()) * t,
-		start.z() + (end.z() - start.z()) * t
-	);
+	return ((end - start) * t) + start;
 }
 
-vec3 vec3::slerp(const vec3& start, const vec3& end, real t) const {
+vec3 vec3::slerp(const vec3& start, const vec3& end, real t) {
 	if (t < 0.01f) {
 		// if t is close to 0 slerpt will give unexpected results
 		// so falling back to lerp
@@ -98,10 +105,5 @@ vec3 vec3::slerp(const vec3& start, const vec3& end, real t) const {
 }
 
 vec3 vec3::nlerp(const vec3& start, const vec3& end, real t) {
-	vec3 linear(
-		start.x() + (end.x() - start.x()) * t,
-		start.y() + (end.y() - start.y()) * t,
-		start.z() + (end.z() - start.z()) * t
-	);
-	return normalized(linear);
+	return normalized(lerp(start, end, t));
 }
