@@ -1,3 +1,11 @@
-﻿  main.cpp
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+﻿  track.cpp
+C:\dev\Animare\Animare\src\animation\track.hpp(27,29): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\Animare\Animare\src\animation\track.cpp(4,12): warning C4305: 'return': truncation from 'double' to 'real'
+  main.cpp
+  Generating Code...
+C:\dev\Animare\Animare\src\math\mat4.hpp(92): warning C4715: 'mat4::operator[]': not all control paths return a value
+C:\dev\Animare\Animare\src\math\vec4.hpp(40): warning C4717: 'vec4::operator[]': recursive on all control paths, function will cause runtime stack overflow
+C:\dev\Animare\Animare\src\math\mat4.hpp(314): warning C4715: 'mat4::get_at_index': not all control paths return a value
+C:\dev\Animare\Animare\src\animation\track.cpp(15): warning C4172: returning address of local variable or temporary
+C:\dev\Animare\Animare\src\animation\track.cpp(20): warning C4172: returning address of local variable or temporary
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe

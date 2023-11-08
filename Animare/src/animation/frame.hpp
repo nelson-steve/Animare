@@ -13,8 +13,29 @@ public:
         quaternion
     } m_frame_type;
 
-    frame() = delete;
+    frame(){}
     frame(frame_type type) {
+        if (type == frame_type::scalar) {
+            m_value.resize(1);
+            m_in_tangent.resize(1);
+            m_out_tangent.resize(1);
+        }
+        else if (type == frame_type::vector) {
+            m_value.resize(3);
+            m_in_tangent.resize(3);
+            m_out_tangent.resize(3);
+        }
+        else if (type == frame_type::quaternion) {
+            m_value.resize(4);
+            m_in_tangent.resize(4);
+            m_out_tangent.resize(4);
+        }
+        else {
+            assert(false);
+        }
+    }
+
+    void set_frame(frame_type type) {
         if (type == frame_type::scalar) {
             m_value.resize(1);
             m_in_tangent.resize(1);

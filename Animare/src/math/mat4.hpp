@@ -65,7 +65,12 @@ public:
         m_forward  (_20, _21, _22, _23),
         m_position (_30, _31, _32, _33) 
     {}
-
+    inline mat4(const vec4& right, const vec4& up, const vec4& forward, const vec4& position) :
+        m_right(right),
+        m_up(up),
+        m_forward(forward),
+        m_position(position)
+    {}
     // operators
     friend bool operator==(const mat4& lhs, const mat4& rhs) {
         for (int i = 0; i < 16; ++i) {
@@ -142,53 +147,47 @@ public:
             MAT4_VEC4_DOT(2, vec.x(), vec.y(), vec.z(), _w)
         );
     }
-    void transpose(mat4& mat) {
-        {
-            float yx = mat.yx();
-            mat.set_yx(mat.xy());
-            mat.set_xy(yx);
-        }
-        {
-            float zx = mat.zx();
-            mat.set_zx(mat.xz());
-            mat.set_xz(zx);
-        }
-        {
-            float wx = mat.wx();
-            mat.set_wx(mat.wx());
-            mat.set_xw(wx);
-        }
-        {
-            float t = mat.zy();
-            mat.set_zy(mat.xy());
-            mat.set_yz(t);
-        }
-        {
-            float t = mat.wy();
-            mat.set_wy(mat.yw());
-            mat.set_yw(t);
-        }
-        {
-            float t = mat.wz();
-            mat.set_wz(mat.zw());
-            mat.set_zw(t);
-        }
+    static mat4 transpose(const mat4& mat) {
+        mat4 temp;
+
+        temp.set_at_index(0, mat.get_at_index(0));
+        temp.set_at_index(1, mat.get_at_index(4));
+        temp.set_at_index(2, mat.get_at_index(8));
+        temp.set_at_index(3, mat.get_at_index(12));
+        
+        temp.set_at_index(4, mat.get_at_index(1));
+        temp.set_at_index(5, mat.get_at_index(5));
+        temp.set_at_index(6, mat.get_at_index(9));
+        temp.set_at_index(7, mat.get_at_index(13));
+
+        temp.set_at_index(8, mat.get_at_index(2));
+        temp.set_at_index(9, mat.get_at_index(6));
+        temp.set_at_index(10, mat.get_at_index(10));
+        temp.set_at_index(11, mat.get_at_index(14));
+
+        temp.set_at_index(12, mat.get_at_index(3));
+        temp.set_at_index(13, mat.get_at_index(7));
+        temp.set_at_index(14, mat.get_at_index(11));
+        temp.set_at_index(15, mat.get_at_index(15));
+
+        return temp;
     }
-    mat4 transposed(const mat4& mat) {
-        return mat4(
-            mat.xx(), mat.yx(), mat.zx(), mat.wx(),
-            mat.xy(), mat.yy(), mat.zy(), mat.wy(),
-            mat.xz(), mat.yz(), mat.zz(), mat.wz(),
-            mat.xw(), mat.yw(), mat.zw(), mat.ww()
+    void transposed() {
+        mat4 temp = mat4(m_right, m_up, m_forward, m_position);
+        set_mat(
+            temp.xx(), temp.yx(), temp.zx(), temp.wx(),
+            temp.xy(), temp.yy(), temp.zy(), temp.wy(),
+            temp.xz(), temp.yz(), temp.zz(), temp.wz(),
+            temp.xw(), temp.yw(), temp.zw(), temp.ww()
         );
     }
-    float determinant(const mat4& m) {
+    static float determinant(const mat4& m) {
         return m[0] * MAT4_3X3MINOR(m, 1, 2, 3, 1, 2, 3)
              - m[4] * MAT4_3X3MINOR(m, 0, 2, 3, 1, 2, 3)
              + m[8] * MAT4_3X3MINOR(m, 0, 1, 3, 1, 2, 3)
             - m[12] * MAT4_3X3MINOR(m, 0, 1, 2, 1, 2, 3);
     }
-    mat4 adjugate(const mat4& mat) {
+    static mat4 adjugate(const mat4& mat) {
         //Cof (M[i, j]) = Minor(M[i, j]] * pow(-1, i + j)
         mat4 cofactor;
         cofactor.set_at_index(0 ,  MAT4_3X3MINOR(mat, 1, 2, 3, 1, 2, 3));
@@ -207,9 +206,9 @@ public:
         cofactor.set_at_index(13,  MAT4_3X3MINOR(mat, 0, 1, 2, 0, 2, 3));
         cofactor.set_at_index(14, -MAT4_3X3MINOR(mat, 0, 1, 2, 0, 1, 3));
         cofactor.set_at_index(15,  MAT4_3X3MINOR(mat, 0, 1, 2, 0, 1, 2));
-        return transposed(cofactor);
+        return transpose(cofactor);
     }
-    mat4 inverse(const mat4& mat) {
+    static mat4 inverse(const mat4& mat) {
         float det = determinant(mat);
 
         if (det == 0.0f) {
@@ -354,6 +353,17 @@ public:
     void set_wy(real value) { m_position.set_y(value); }	// 13
     void set_wz(real value) { m_position.set_z(value); }	// 14
     void set_ww(real value) { m_position.set_w(value); }	// 15
+
+    void set_mat(
+        float _00, float _01, float _02, float _03,
+        float _10, float _11, float _12, float _13,
+        float _20, float _21, float _22, float _23,
+        float _30, float _31, float _32, float _33) {
+        m_right = vec4(_00, _01, _02, _03);
+        m_up = vec4(_10, _11, _12, _13);
+        m_forward = vec4(_20, _21, _22, _23);
+        m_position = vec4(_30, _31, _32, _33);
+    }
 
     void set_at_index(int index, real value) {
         if (index == 0)  set_xx(value);

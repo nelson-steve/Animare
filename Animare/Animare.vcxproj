@@ -443,6 +443,7 @@
     <ClInclude Include="src\animation\bezier.hpp" />
     <ClInclude Include="src\animation\clip.hpp" />
     <ClInclude Include="src\animation\frame.hpp" />
+    <ClInclude Include="src\animation\pose.hpp" />
     <ClInclude Include="src\animation\track.hpp" />
     <ClInclude Include="src\defines.hpp" />
     <ClInclude Include="src\math\mat4.hpp" />
