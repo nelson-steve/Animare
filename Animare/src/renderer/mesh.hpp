@@ -1,5 +1,5 @@
 #pragma once
-
+#if 0
 #include <string>
 #include <map>
 
@@ -18,3 +18,4 @@ private:
     std::map<int, GLuint> m_vbos;
     tinygltf::Model model;
 };
+#endif

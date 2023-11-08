@@ -1,6 +1,7 @@
 #include "renderer.hpp"
 
 #include "animation/bezier.hpp"
+#include "renderer/model.hpp"
 
 #include <assert.h>
 #include <vector>
@@ -24,6 +25,8 @@ glm::vec3 green = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
 bezier<glm::vec3> curve;
 
+model* m_model;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -46,38 +49,39 @@ renderer::renderer() {
 
     m_camera = new camera();
 
+    std::string model_path = "../assets/models/DamagedHelmet/glTF/DamagedHelmet.gltf";
+    //std::string model_path = "../assets/models/Cube/Cube.gltf";
+    m_model = new model();
+    m_model->load(model_path);
+    
     // creating shaders
     m_shader = new shader("../assets/shaders/vertex.glsl", "../assets/shaders/pixel.glsl");
     m_shader->bind();
-
-    std::string model_path = "../assets/models/DamagedHelmet/glTF/DamagedHelmet.gltf";
-    m_mesh = new mesh(model_path);
-    
-    m_mesh->bindModel();
-    curve.point1 = glm::vec3(-3, 0, 0);
-    curve.point2 = glm::vec3(3, 0, 0);
-    curve.control1 = glm::vec3(-2, 2, 0);
-    curve.control2 = glm::vec3(2, 2, 0);
 
     //m_mesh->drawModel();
 
 }
 
-void renderer::render() {
-    line l1(curve.point1, curve.control1);
-    line l2(curve.control1, curve.control2);
-    line l3(curve.point2, curve.control2);
-    //std::vector<glm::vec3> points1;
-    //points1.push_back(curve.point1);
-    //points1.push_back(curve.control1);
-    //
-    //points1.push_back(curve.control1);
-    //points1.push_back(curve.control2);
-    //
-    //points1.push_back(curve.point2);
-    //points1.push_back(curve.control2);
-    //line l1(points1);
+void draw_node(node* _node)
+{
+    glBindVertexArray(m_model->vao);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_model->indices_vbo);
+    //glBindBuffer(GL_ARRAY_BUFFER, m_model->vertices_vbo);
+    if (_node->_mesh) {
+        for (primitive* _primitive : _node->_mesh->primitives) {
+            uint32_t end = _primitive->first_index - _primitive->index_count;
+            //glDrawArrays(GL_ARRAY_BUFFER, 0, _primitive->vertex_count);
+            //glDrawRangeElements(GL_TRIANGLES, _primitive->first_index, _primitive->index_count, _primitive->index_count, GL_UNSIGNED_BYTE, 0);
+            //vkCmdDrawIndexed(commandBuffer, _primitive->index_count, 1, _primitive->first_index, 0, 0);
+            glDrawElements(GL_TRIANGLES, _primitive->index_count, GL_UNSIGNED_INT, 0);
+        }
+    }
+    for (auto& child : _node->children) {
+        draw_node(child);
+    }
+}
 
+void renderer::render() {
     while (!glfwWindowShouldClose(m_window))
     {
         real current_frame = static_cast<float>(glfwGetTime());
@@ -91,25 +95,15 @@ void renderer::render() {
         m_camera->Update(delta_time, m_window);
 
         {
-            //glm::mat4 model = glm::mat4(1.0f);
-            //m_shader->bind();
-            //m_shader->set_uniform_mat4("u_model", model);
-            //m_shader->set_uniform_mat4("u_view", m_camera->GetView());
-            //m_shader->set_uniform_mat4("u_projection", m_camera->GetProjection());
+            glm::mat4 model = glm::mat4(1.0f);
+            m_shader->bind();
+            m_shader->set_uniform_mat4("u_model", model); 
+            m_shader->set_uniform_mat4("u_view", m_camera->GetView());
+            m_shader->set_uniform_mat4("u_projection", m_camera->GetProjection());
         }
 
-        l1.draw(m_camera, red);
-        l2.draw(m_camera, green);
-        l3.draw(m_camera, red);
-
-        for (int i = 0; i < 19; ++i) {
-            float t0 = (float)i / 19.0f;
-            float t1 = (float)(i + 1) / 19.0f;
-            glm::vec3 thisPoint = curve.Interpolate(curve, t0);
-            glm::vec3 nextPoint = curve.Interpolate(curve, t1);
-            line _line(thisPoint, nextPoint);
-            _line.draw(m_camera, blue);
-            //DrawLine(thisPoint, nextPoint, blue);
+        for (auto& _node : m_model->nodes) {
+            draw_node(_node);
         }
 
         glfwSwapBuffers(m_window);
@@ -119,7 +113,7 @@ void renderer::render() {
 
 void renderer::destroy() {
     delete m_shader;
-    delete m_mesh;
+    delete m_model;
     delete m_camera;
     glfwTerminate();
 }

@@ -13,36 +13,8 @@ bool compare_glm_mat4_with_mat4(glm::mat4 glm_matrix, mat4 matrix) {
 }
 
 int main(int argc, char** argv) {
-    glm::mat4 glm_mat1 = glm::mat4(
-        glm::vec4(1, 2, 3, 4),
-        glm::vec4(5, 6, 7, 8),
-        glm::vec4(9, 10, 11, 12),
-        glm::vec4(13, 14, 15, 16));
-
-    glm::mat4 glm_mat2 = glm::mat4(
-        glm::vec4(2, 4, 5, 7),
-        glm::vec4(5, 34, 45, 56),
-        glm::vec4(34, 12, 15, 15),
-        glm::vec4(23, 63, 63, 34));
-
-    mat4 mat1 = mat4(
-        vec4(1, 2, 3, 4),
-        vec4(5, 6, 7, 8),
-        vec4(9, 10, 11, 12),
-        vec4(13, 14, 15, 16));
-
-    mat4 mat2 = mat4(
-        vec4(2, 4, 5, 7),
-        vec4(5, 34, 45, 56),
-        vec4(34, 12, 15, 15),
-        vec4(23, 63, 63, 34));
-    glm::mat4 result_glm = glm::inverse(glm_mat1);
-    mat4 result = mat4::inverse(mat1);
-
-    assert(compare_glm_mat4_with_mat4(result_glm, result));
-
-    //renderer* r = new renderer();
-    //r->render();
-    //r->destroy();
-    //delete r;
+    renderer* r = new renderer();
+    r->render();
+    r->destroy();
+    delete r;
 }

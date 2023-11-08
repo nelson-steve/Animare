@@ -62,7 +62,7 @@ protected:
 private:
     real m_start_time = 0.0f;
     real m_end_time = 0.0f;
-    std::vector<frame> m_frames;
+    std::vector<frame*> m_frames;
     interpolation m_interpolation;
 };
 

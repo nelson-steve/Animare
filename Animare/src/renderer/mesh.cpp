@@ -1,5 +1,5 @@
 #include "mesh.hpp"
-
+#if 0
 #include <iostream>
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -215,3 +215,4 @@ void mesh::bindModel() {
         }
     }
 }
+#endif
