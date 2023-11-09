@@ -6,6 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+class shader;
+
 struct material;
 
 struct primitive {
@@ -24,10 +26,11 @@ struct mesh {
     std::vector<primitive*> primitives;
     struct {
         glm::mat4 matrix;
-        glm::mat4 joint_matrix[128];
+        glm::mat4 joint_matrix[32];
         real joint_count = 0.0f;
     } skin_data;
     mesh(const glm::mat4& mat);
+    void setBoundingBox(glm::vec3 min, glm::vec3 max);
 };
 
 struct node;
@@ -48,13 +51,23 @@ struct node {
     mesh* _mesh;
     skin* _skin;
     int32_t skin_index = -1;
-    glm::vec3 translation;
-    glm::quat rotation;
-    glm::vec3 scale;
+    glm::vec3 translation{};
+    glm::quat rotation{};
+    glm::vec3 scale{ 1.0f };
 
-    void update() {
-
+    const glm::mat4& get_local_matrix() {
+        return glm::translate(glm::mat4(1.0f), translation) * glm::mat4(rotation) * glm::scale(glm::mat4(1.0f), scale) * matrix;
     }
+    const glm::mat4& get_matrix() {
+        glm::mat4 m = get_local_matrix();
+        node* p = parent;
+        while (p) {
+            m = p->get_local_matrix() * m;
+            p = p->parent;
+        }
+        return m;
+    }
+    void update(shader* _shader);
 };
 
 struct animation_channel {
@@ -80,6 +93,7 @@ struct animation {
 };
 
 struct model {
+    shader* _shader;
     uint32_t vao;
     uint32_t vertices_vbo;
     uint32_t indices_vbo;
@@ -98,6 +112,8 @@ struct model {
         uint32_t vbo;
     } indices;
 
+    glm::mat4 aabb;
+
     std::vector<node*> nodes;
     std::vector<node*> linear_nodes;
 
@@ -106,6 +122,12 @@ struct model {
     std::vector<material> materials;
     std::vector<animation> animations;
 
+    struct Dimensions {
+        glm::vec3 min = glm::vec3(FLT_MAX);
+        glm::vec3 max = glm::vec3(-FLT_MAX);
+    } dimensions;
+
+
     struct loader_info {
         uint32_t* index_buffer;
         vertex* vertex_buffer;
@@ -113,7 +135,9 @@ struct model {
         size_t index_pos = 0;
     };
 
-    void load(const std::string& path);
+    tinygltf::Model _model;
+
+    void load(const std::string& path, shader* _shader);
     void load_node(node* parent, const tinygltf::Node& node, uint32_t nodeIndex, const tinygltf::Model& model, loader_info _loader_info);
     void get_node_props(const tinygltf::Node& node, const tinygltf::Model& model, size_t& vertexCount, size_t& indexCount);
     void load_skins(tinygltf::Model& gltfModel);
@@ -122,10 +146,9 @@ struct model {
     void load_animations(tinygltf::Model& gltfModel);
     void draw_node(node* _node);
     void draw();
-    void getSceneDimensions();
     void update_animation(uint32_t index, float time);
     void destroy();
-    node* findNode(node* parent, uint32_t index);
-    node* nodeFromIndex(uint32_t index);
+    node* find_node(node* parent, uint32_t index);
+    node* node_from_index(uint32_t index);
 
 };

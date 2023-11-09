@@ -20,6 +20,9 @@ float vertices[] = {
       0.0f,  0.5f, 0.0f
 };
 
+int32_t animation_index = 0;
+real animation_timer = 0.0f;
+
 glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
 glm::vec3 green = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -49,14 +52,16 @@ renderer::renderer() {
 
     m_camera = new camera();
 
-    std::string model_path = "../assets/models/DamagedHelmet/glTF/DamagedHelmet.gltf";
+    std::string model_path = "../assets/models/Fox/glTF/Fox.gltf";
+    //std::string model_path = "../assets/models/DamagedHelmet/glTF/DamagedHelmet.gltf";
     //std::string model_path = "../assets/models/Cube/Cube.gltf";
-    m_model = new model();
-    m_model->load(model_path);
-    
+
     // creating shaders
     m_shader = new shader("../assets/shaders/vertex.glsl", "../assets/shaders/pixel.glsl");
     m_shader->bind();
+
+    m_model = new model();
+    m_model->load(model_path, m_shader);
 
     //m_mesh->drawModel();
 
@@ -65,15 +70,12 @@ renderer::renderer() {
 void draw_node(node* _node)
 {
     glBindVertexArray(m_model->vao);
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_model->indices_vbo);
-    //glBindBuffer(GL_ARRAY_BUFFER, m_model->vertices_vbo);
     if (_node->_mesh) {
         for (primitive* _primitive : _node->_mesh->primitives) {
-            uint32_t end = _primitive->first_index - _primitive->index_count;
-            //glDrawArrays(GL_ARRAY_BUFFER, 0, _primitive->vertex_count);
+            //uint32_t end = _primitive->first_index - _primitive->index_count;
             //glDrawRangeElements(GL_TRIANGLES, _primitive->first_index, _primitive->index_count, _primitive->index_count, GL_UNSIGNED_BYTE, 0);
-            //vkCmdDrawIndexed(commandBuffer, _primitive->index_count, 1, _primitive->first_index, 0, 0);
-            glDrawElements(GL_TRIANGLES, _primitive->index_count, GL_UNSIGNED_INT, 0);
+            //glDrawElements(GL_TRIANGLES, _primitive->index_count, GL_UNSIGNED_INT, 0);
+            glDrawArrays(GL_TRIANGLES, 0, _primitive->vertex_count);
         }
     }
     for (auto& child : _node->children) {
@@ -100,11 +102,76 @@ void renderer::render() {
             m_shader->set_uniform_mat4("u_model", model); 
             m_shader->set_uniform_mat4("u_view", m_camera->GetView());
             m_shader->set_uniform_mat4("u_projection", m_camera->GetProjection());
+
+            std::vector<glm::mat4> matrices;
+            for (int i = 0; i < 32; i++) {
+                matrices.push_back(glm::mat4(1.0f));
+            }
+
+            //matrices[0] = glm::scale(glm::mat4(1.0), glm::vec3(5, 1, 1));
+            matrices[0] = glm::translate(glm::mat4(1.0), glm::vec3(2, 1, 1));
+            matrices[5] = glm::translate(glm::mat4(1.0), glm::vec3(2, 5, 1));
+            matrices[3] = glm::translate(glm::mat4(1.0), glm::vec3(2, 1, 6));
+
+            //for (int i = 0; i < matrices.size(); i++) {
+            //    m_shader->set_uniform_mat4("joint_matrix[" + std::to_string(i) + "]", matrices[i]);
+            //}
+            //m_shader->set_uniform_mat4("matrix", glm::mat4(1.0f));
+            //m_shader->set_uniform_float("joint_count", 24);
         }
 
-        for (auto& _node : m_model->nodes) {
-            draw_node(_node);
+        std::vector<glm::vec3> colors;
+        colors.push_back(glm::vec3(1, 0, 0));
+        colors.push_back(glm::vec3(0, 1, 0));
+        colors.push_back(glm::vec3(0, 0, 1));
+
+        int i = 0;
+        for (auto& _node : m_model->linear_nodes) {
+            glBindVertexArray(m_model->vao);
+            if (_node->_mesh) {
+                if (i < 3) {
+                    m_shader->set_uniform_vec3("u_color", colors[i]);
+                }
+                for (primitive* _primitive : _node->_mesh->primitives) {
+                    //uint32_t end = _primitive->first_index - _primitive->index_count;
+                    //glDrawRangeElements(GL_TRIANGLES, _primitive->first_index, _primitive->index_count, _primitive->index_count, GL_UNSIGNED_BYTE, 0);
+                    //glDrawElements(GL_TRIANGLES, _primitive->index_count, GL_UNSIGNED_INT, 0);
+                    glDrawArrays(GL_TRIANGLES, 0, _primitive->vertex_count);
+                }
+                i++;
+            }
         }
+
+        //for (auto& _node : m_model->nodes) {
+        //    draw_node(_node);
+        //}
+
+        bool playing = true;
+        bool rotate_model = true;
+        bool animate = true;
+        animation_index = 2;
+        if (playing) {
+            if (rotate_model) {
+                //modelrot.y += delta_time * 35.0f;
+                //if (modelrot.y > 360.0f) {
+                //    modelrot.y -= 360.0f;
+                //}
+            }
+            if ((animate) && (m_model->animations.size() > 0)) {
+                animation_timer += delta_time;
+                if (animation_timer > m_model->animations[animation_index].end) {
+                    animation_timer -= m_model->animations[animation_index].end;
+                }
+                m_model->update_animation(animation_index, animation_timer);
+            }
+            //updateParams();
+            if (rotate_model) {
+                //updateUniformBuffers();
+            }
+        }
+        //updateUniformBuffers();
+        //if (camera.updated) {
+        //}
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();

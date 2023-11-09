@@ -30,6 +30,12 @@ public:
         GLuint location = glGetUniformLocation(m_program_handle, name.c_str());
         glUniform3f(location, vec[0], vec[1], vec[2]);
     }
+
+    void set_uniform_float(const std::string& name, float value)
+    {
+        GLuint location = glGetUniformLocation(m_program_handle, name.c_str());
+        glUniform1f(location, value);
+    }
 private:
     uint32_t m_program_handle = 0;
     uint32_t m_vertex_handle = 0;
