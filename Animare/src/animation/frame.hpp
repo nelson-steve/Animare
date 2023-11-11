@@ -35,6 +35,9 @@ public:
         }
     }
 
+    void set_time(real time) { m_time = time; }
+    void set_value(glm::vec4 value) { m_value = value; }
+
     void set_frame(frame_type type) {
         if (type == frame_type::scalar) {
             m_value.resize(1);
@@ -56,7 +59,7 @@ public:
         }
     }
 private:
-    std::vector<real> m_value;
+    glm::vec4 m_value;
     std::vector<real> m_in_tangent;
     std::vector<real> m_out_tangent;
     real m_time;

@@ -160,6 +160,8 @@ void model::load_node(node* parent, const tinygltf::Node& gltf_node, uint32_t no
 	new_node->skin_index = gltf_node.skin;
 	new_node->matrix = glm::mat4(1.0f);
 
+	std::cout << gltf_node.name << std::endl;
+
 	// Generate local node matrix
 	glm::vec3 translation = glm::vec3(0.0f);
 	if (gltf_node.translation.size() == 3) {

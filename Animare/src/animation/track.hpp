@@ -16,12 +16,22 @@ public:
         linear,
         cubic
     };
+
+    enum class data_type {
+        rotation,
+        translation,
+        scale
+    };
     track() {
         m_interpolation = interpolation::linear;
     }
     track(interpolation interp) {
         m_interpolation = interp;
     }
+    void add_frame(frame frame) {
+        m_frames.push_back(frame);
+    }
+    frame& get_frame_at_index(int i) { return m_frames[i]; }
     void resize(uint32_t size) {
         m_frames.resize(size);
     }
@@ -34,13 +44,17 @@ public:
     void set_interpolation(interpolation interp) {
         m_interpolation = interp;
     }
+    void set_start_time(real time) { m_start_time = time; }
+    void set_end_time(real time) { m_end_time= time; }
     real get_start_time() {
         return m_start_time;
     }
     real get_end_time() {
         return m_end_time;
     }
-    frame* operator[](unsigned int index) {
+    void set_data_type(data_type type) { m_data_type = type; }
+    data_type get_data_type() const { return m_data_type; }
+    frame operator[](unsigned int index) {
         if (!m_frames.empty()) {
             return m_frames[index];
         }
@@ -62,8 +76,9 @@ protected:
 private:
     real m_start_time = 0.0f;
     real m_end_time = 0.0f;
-    std::vector<frame*> m_frames;
+    std::vector<frame> m_frames;
     interpolation m_interpolation;
+    data_type m_data_type;
 };
 
 namespace track_helper {

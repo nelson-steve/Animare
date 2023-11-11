@@ -1,5 +1,6 @@
-﻿  renderer.cpp
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(43,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(43,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(213,33): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+﻿  animation_controller.cpp
+C:\dev\Animare\Animare\src\animation\track.hpp(29,29): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+  shader.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe
