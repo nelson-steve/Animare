@@ -32,6 +32,7 @@ bezier<glm::vec3> curve;
 
 model* m_model;
 animation_controller* controller;
+editor* _editor;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -53,7 +54,7 @@ renderer::renderer() {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         assert(false);
 
-    editor _editor(m_window);
+    _editor = new editor(m_window);
 
     m_camera = new camera();
 
@@ -100,6 +101,8 @@ void renderer::render() {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        _editor->new_frame();
+
         m_camera->Update(delta_time, m_window);
 
         {
@@ -123,6 +126,8 @@ void renderer::render() {
             }
         }
 
+        _editor->demo_ui();
+
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
@@ -132,6 +137,7 @@ void renderer::destroy() {
     delete m_shader;
     delete m_model;
     delete m_camera;
+    delete _editor;
     glfwTerminate();
 }
 

@@ -1,3 +1,11 @@
-﻿  imgui_impl_glfw.cpp
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+﻿  editor.cpp
+  renderer.cpp
+C:\dev\Animare\Animare\src\animation\track.hpp(54,29): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\Animare\Animare\src\animation\clip.hpp(15,51): warning C4834: discarding return value of function with 'nodiscard' attribute
+C:\dev\Animare\Animare\src\animation\animation_controller.hpp(9,11): warning C4099: 'node': type name first seen using 'struct' now seen using 'class'
+C:\dev\Animare\Animare\src\renderer\model.hpp(45,8): message : see declaration of 'node'
+C:\dev\Animare\Animare\src\renderer\renderer.cpp(47,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\dev\Animare\Animare\src\renderer\renderer.cpp(47,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\dev\Animare\Animare\src\renderer\renderer.cpp(169,33): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+  Generating Code...
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe
