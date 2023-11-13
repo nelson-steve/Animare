@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\glm;$(ProjectDir)dependencies\glad\include;$(ProjectDir)dependencies\tinygltf;$(ProjectDir)src;$(ProjectDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\glm;$(ProjectDir)dependencies\glad\include;$(ProjectDir)dependencies\tinygltf;$(ProjectDir)src;$(ProjectDir)dependencies\imgui\src;$(ProjectDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,7 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\glm;$(ProjectDir)dependencies\glad\include;$(ProjectDir)dependencies\tinygltf;$(ProjectDir)src;$(ProjectDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\glm;$(ProjectDir)dependencies\glad\include;$(ProjectDir)dependencies\tinygltf;$(ProjectDir)src;$(ProjectDir)dependencies\imgui\src;$(ProjectDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\glm;$(ProjectDir)dependencies\glad\include;$(ProjectDir)dependencies\tinygltf;$(ProjectDir)src;$(ProjectDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\glm;$(ProjectDir)dependencies\glad\include;$(ProjectDir)dependencies\tinygltf;$(ProjectDir)src;$(ProjectDir)dependencies\imgui\src;$(ProjectDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,7 +127,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\glm;$(ProjectDir)dependencies\glad\include;$(ProjectDir)dependencies\tinygltf;$(ProjectDir)src;$(ProjectDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\glm;$(ProjectDir)dependencies\glad\include;$(ProjectDir)dependencies\tinygltf;$(ProjectDir)src;$(ProjectDir)dependencies\imgui\src;$(ProjectDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,9 +141,17 @@
   <ItemGroup>
     <ClCompile Include="dependencies\glad\src\glad.c" />
     <ClCompile Include="dependencies\glm\glm\detail\glm.cpp" />
+    <ClCompile Include="dependencies\imgui\src\imgui.cpp" />
+    <ClCompile Include="dependencies\imgui\src\imgui_demo.cpp" />
+    <ClCompile Include="dependencies\imgui\src\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\imgui\src\imgui_impl_glfw.cpp" />
+    <ClCompile Include="dependencies\imgui\src\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="dependencies\imgui\src\imgui_tables.cpp" />
+    <ClCompile Include="dependencies\imgui\src\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\tinygltf\tiny_gltf.cc" />
     <ClCompile Include="src\animation\animation_controller.cpp" />
     <ClCompile Include="src\animation\track.cpp" />
+    <ClCompile Include="src\gui\editor.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math\vec3.cpp" />
     <ClCompile Include="src\renderer\camera.cpp" />
@@ -441,6 +449,15 @@
     <ClInclude Include="dependencies\glm\glm\vec3.hpp" />
     <ClInclude Include="dependencies\glm\glm\vec4.hpp" />
     <ClInclude Include="dependencies\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="dependencies\imgui\src\imconfig.h" />
+    <ClInclude Include="dependencies\imgui\src\imgui.h" />
+    <ClInclude Include="dependencies\imgui\src\imgui_impl_glfw.h" />
+    <ClInclude Include="dependencies\imgui\src\imgui_impl_opengl3.h" />
+    <ClInclude Include="dependencies\imgui\src\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="dependencies\imgui\src\imgui_internal.h" />
+    <ClInclude Include="dependencies\imgui\src\imstb_rectpack.h" />
+    <ClInclude Include="dependencies\imgui\src\imstb_textedit.h" />
+    <ClInclude Include="dependencies\imgui\src\imstb_truetype.h" />
     <ClInclude Include="dependencies\tinygltf\tiny_gltf.h" />
     <ClInclude Include="src\animation\animation_controller.hpp" />
     <ClInclude Include="src\animation\bezier.hpp" />
@@ -449,6 +466,7 @@
     <ClInclude Include="src\animation\pose.hpp" />
     <ClInclude Include="src\animation\track.hpp" />
     <ClInclude Include="src\defines.hpp" />
+    <ClInclude Include="src\gui\editor.hpp" />
     <ClInclude Include="src\math\mat4.hpp" />
     <ClInclude Include="src\math\quaternion.hpp" />
     <ClInclude Include="src\math\transform.hpp" />

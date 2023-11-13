@@ -3,6 +3,7 @@
 #include "animation/bezier.hpp"
 #include "renderer/model.hpp"
 #include "animation/animation_controller.hpp"
+#include "gui/editor.hpp"
 
 #include <assert.h>
 #include <vector>
@@ -51,6 +52,8 @@ renderer::renderer() {
     // loading glfw functions with glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         assert(false);
+
+    editor _editor(m_window);
 
     m_camera = new camera();
 
