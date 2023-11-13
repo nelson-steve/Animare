@@ -2,6 +2,7 @@
 
 #include "animation/bezier.hpp"
 #include "renderer/model.hpp"
+#include "animation/animation_controller.hpp"
 
 #include <assert.h>
 #include <vector>
@@ -29,6 +30,7 @@ glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
 bezier<glm::vec3> curve;
 
 model* m_model;
+animation_controller* controller;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -62,6 +64,7 @@ renderer::renderer() {
 
     m_model = new model();
     m_model->load(model_path, m_shader);
+    controller = new animation_controller(*m_model);
 
     //m_mesh->drawModel();
 
@@ -97,56 +100,32 @@ void renderer::render() {
         m_camera->Update(delta_time, m_window);
 
         {
-            glm::mat4 model = glm::mat4(1.0f);
+            glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::scale(model, glm::vec3(0.5f));
             m_shader->bind();
             m_shader->set_uniform_mat4("u_model", model); 
             m_shader->set_uniform_mat4("u_view", m_camera->GetView());
             m_shader->set_uniform_mat4("u_projection", m_camera->GetProjection());
-
-            std::vector<glm::mat4> matrices;
-            for (int i = 0; i < 32; i++) {
-                matrices.push_back(glm::mat4(1.0f));
-            }
-
-            //matrices[0] = glm::scale(glm::mat4(1.0), glm::vec3(5, 1, 1));
-            matrices[0] = glm::translate(glm::mat4(1.0), glm::vec3(2, 1, 1));
-            matrices[5] = glm::translate(glm::mat4(1.0), glm::vec3(2, 5, 1));
-            matrices[3] = glm::translate(glm::mat4(1.0), glm::vec3(2, 1, 6));
-
-            //for (int i = 0; i < matrices.size(); i++) {
-            //    m_shader->set_uniform_mat4("joint_matrix[" + std::to_string(i) + "]", matrices[i]);
-            //}
-            //m_shader->set_uniform_mat4("matrix", glm::mat4(1.0f));
-            //m_shader->set_uniform_float("joint_count", 24);
         }
+
+        for (auto& _node : m_model->linear_nodes) {
+            glBindVertexArray(m_model->vao);
+            if (_node->_mesh) {
+                for (primitive* _primitive : _node->_mesh->primitives) {
+                    glDrawArrays(GL_TRIANGLES, 0, _primitive->vertex_count);
+                }
+            }
+        }
+
+        controller->play_animation(*m_model, delta_time, *m_shader);
 
         std::vector<glm::vec3> colors;
         colors.push_back(glm::vec3(1, 0, 0));
         colors.push_back(glm::vec3(0, 1, 0));
         colors.push_back(glm::vec3(0, 0, 1));
 
-        int i = 0;
-        for (auto& _node : m_model->linear_nodes) {
-            glBindVertexArray(m_model->vao);
-            if (_node->_mesh) {
-                if (i < 3) {
-                    m_shader->set_uniform_vec3("u_color", colors[i]);
-                }
-                for (primitive* _primitive : _node->_mesh->primitives) {
-                    //uint32_t end = _primitive->first_index - _primitive->index_count;
-                    //glDrawRangeElements(GL_TRIANGLES, _primitive->first_index, _primitive->index_count, _primitive->index_count, GL_UNSIGNED_BYTE, 0);
-                    //glDrawElements(GL_TRIANGLES, _primitive->index_count, GL_UNSIGNED_INT, 0);
-                    glDrawArrays(GL_TRIANGLES, 0, _primitive->vertex_count);
-                }
-                i++;
-            }
-        }
-
-        //for (auto& _node : m_model->nodes) {
-        //    draw_node(_node);
-        //}
-
-        bool playing = true;
+        bool playing = false;
         bool rotate_model = true;
         bool animate = true;
         animation_index = 2;

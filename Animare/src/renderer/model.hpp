@@ -1,6 +1,7 @@
 #pragma once
 
 #include "defines.hpp"
+#include "animation/clip.hpp"
 
 #include <tiny_gltf.h>
 #include <glm/glm.hpp>
@@ -122,6 +123,8 @@ struct model {
     std::vector<material> materials;
     std::vector<animation> animations;
 
+    clip m_animation_clip;
+
     struct Dimensions {
         glm::vec3 min = glm::vec3(FLT_MAX);
         glm::vec3 max = glm::vec3(-FLT_MAX);
@@ -137,6 +140,7 @@ struct model {
 
     tinygltf::Model _model;
 
+    model(){}
     void load(const std::string& path, shader* _shader);
     void load_node(node* parent, const tinygltf::Node& node, uint32_t nodeIndex, const tinygltf::Model& model, loader_info _loader_info);
     void get_node_props(const tinygltf::Node& node, const tinygltf::Model& model, size_t& vertexCount, size_t& indexCount);
@@ -148,6 +152,14 @@ struct model {
     void draw();
     void update_animation(uint32_t index, float time);
     void destroy();
+    node* get_node(uint32_t index) {
+        for (auto& n : linear_nodes) {
+            if (n->index == index) {
+                return n;
+            }
+        }
+        assert(false);
+    }
     node* find_node(node* parent, uint32_t index);
     node* node_from_index(uint32_t index);
 
