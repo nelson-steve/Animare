@@ -31,7 +31,6 @@ struct mesh {
         real joint_count = 0.0f;
     } skin_data;
     mesh(const glm::mat4& mat);
-    void setBoundingBox(glm::vec3 min, glm::vec3 max);
 };
 
 struct node;
@@ -71,28 +70,6 @@ struct node {
     void update(shader* _shader);
 };
 
-struct animation_channel {
-    enum path_type { TRANSLATION, ROTATION, SCALE };
-    path_type path;
-    node* node;
-    uint32_t sampler_index;
-};
-
-struct animation_sampler {
-    enum interpolation_type { LINEAR, STEP, CUBICSPLINE };
-    interpolation_type interpolation;
-    std::vector<float> inputs;
-    std::vector<glm::vec4> outputsVec4;
-};
-
-struct animation {
-    std::string name;
-    std::vector<animation_sampler> samplers;
-    std::vector<animation_channel> channels;
-    float start = std::numeric_limits<float>::max();
-    float end = std::numeric_limits<float>::min();
-};
-
 struct model {
     shader* _shader;
     uint32_t vao;
@@ -121,8 +98,6 @@ struct model {
     std::vector<skin*> skins;
     //std::vector<Texture2D> textures;
     std::vector<material> materials;
-    std::vector<animation> animations;
-
     clip m_animation_clip;
 
     struct Dimensions {
@@ -147,10 +122,8 @@ struct model {
     void load_skins(tinygltf::Model& gltfModel);
     void load_textures(tinygltf::Model& gltfModel);
     void load_materials(tinygltf::Model& gltfModel);
-    void load_animations(tinygltf::Model& gltfModel);
     void draw_node(node* _node);
     void draw();
-    void update_animation(uint32_t index, float time);
     void destroy();
     node* get_node(uint32_t index) {
         for (auto& n : linear_nodes) {

@@ -22,9 +22,7 @@ void node::update(shader* _shader) {
 		glm::mat4 m = get_matrix();
 		if (_skin) {
 			_mesh->skin_data.matrix = m;
-			// Update join matrices
 			glm::mat4 inverseTransform = glm::inverse(m);
-			//size_t numJoints = std::min((uint32_t)_skin->joints.size(), 32); // max no. of joints : 32
 			size_t numJoints = (_skin->joints.size() >= 32) ? 32 : _skin->joints.size();
 			for (size_t i = 0; i < numJoints; i++) {
 				node* joint_node = _skin->joints[i];
@@ -38,15 +36,9 @@ void node::update(shader* _shader) {
 
 			for (int i = 0; i < _mesh->skin_data.joint_count; i++) {
 				_shader->set_uniform_mat4("joint_matrix[" + std::to_string(i) + "]", _mesh->skin_data.joint_matrix[i]);
-				//shader.setVec2(("offsets[" + std::to_string(i) + "]")), translations[i]);
 			}
 			_shader->set_uniform_mat4("matrix", _mesh->skin_data.matrix);
 			_shader->set_uniform_float("joint_count", _mesh->skin_data.joint_count);
-
-			//memcpy(_mesh->uniformBuffer.mapped, &_mesh->uniformBlock, sizeof(_mesh->uniformBlock));
-		}
-		else {
-			//memcpy(_mesh->uniformBuffer.mapped, &m, sizeof(glm::mat4));
 		}
 	}
 
@@ -93,9 +85,6 @@ void model::load(const std::string& path, shader* _shader) {
 		for (size_t i = 0; i < scene.nodes.size(); i++) {
 			const tinygltf::Node node = gltf_model.nodes[scene.nodes[i]];
 			load_node(nullptr, node, scene.nodes[i], gltf_model, _loader_info);
-		}
-		if (gltf_model.animations.size() > 0) {
-			load_animations(gltf_model);
 		}
 		load_skins(gltf_model);
 
@@ -390,183 +379,12 @@ void model::load_materials(tinygltf::Model& gltfModel) {
 
 }
 
-void model::load_animations(tinygltf::Model& gltfModel) {
-	for (tinygltf::Animation& anim : gltfModel.animations) {
-		animation _animation{};
-		_animation.name = anim.name;
-		if (anim.name.empty()) {
-			_animation.name = std::to_string(animations.size());
-		}
-
-		// Samplers
-		for (auto& samp : anim.samplers) {
-			animation_sampler sampler{};
-
-			if (samp.interpolation == "LINEAR") {
-				sampler.interpolation = animation_sampler::interpolation_type::LINEAR;
-			}
-			if (samp.interpolation == "STEP") {
-				sampler.interpolation = animation_sampler::interpolation_type::STEP;
-			}
-			if (samp.interpolation == "CUBICSPLINE") {
-				sampler.interpolation = animation_sampler::interpolation_type::CUBICSPLINE;
-			}
-
-			// Read sampler input time values
-			{
-				const tinygltf::Accessor& accessor = gltfModel.accessors[samp.input];
-				const tinygltf::BufferView& bufferView = gltfModel.bufferViews[accessor.bufferView];
-				const tinygltf::Buffer& buffer = gltfModel.buffers[bufferView.buffer];
-
-				assert(accessor.componentType == TINYGLTF_COMPONENT_TYPE_FLOAT);
-
-				const void* dataPtr = &buffer.data[accessor.byteOffset + bufferView.byteOffset];
-				const float* buf = static_cast<const float*>(dataPtr);
-				for (size_t index = 0; index < accessor.count; index++) {
-					sampler.inputs.push_back(buf[index]);
-				}
-
-				for (auto input : sampler.inputs) {
-					if (input < _animation.start) {
-						_animation.start = input;
-					};
-					if (input > _animation.end) {
-						_animation.end = input;
-					}
-				}
-			}
-
-			// Read sampler output T/R/S values 
-			{
-				const tinygltf::Accessor& accessor = gltfModel.accessors[samp.output];
-				const tinygltf::BufferView& bufferView = gltfModel.bufferViews[accessor.bufferView];
-				const tinygltf::Buffer& buffer = gltfModel.buffers[bufferView.buffer];
-
-				assert(accessor.componentType == TINYGLTF_COMPONENT_TYPE_FLOAT);
-
-				const void* dataPtr = &buffer.data[accessor.byteOffset + bufferView.byteOffset];
-
-				switch (accessor.type) {
-				case TINYGLTF_TYPE_VEC3: {
-					const glm::vec3* buf = static_cast<const glm::vec3*>(dataPtr);
-					for (size_t index = 0; index < accessor.count; index++) {
-						sampler.outputsVec4.push_back(glm::vec4(buf[index], 0.0f));
-					}
-					break;
-				}
-				case TINYGLTF_TYPE_VEC4: {
-					const glm::vec4* buf = static_cast<const glm::vec4*>(dataPtr);
-					for (size_t index = 0; index < accessor.count; index++) {
-						sampler.outputsVec4.push_back(buf[index]);
-					}
-					break;
-				}
-				default: {
-					std::cout << "unknown type" << std::endl;
-					break;
-				}
-				}
-			}
-
-			_animation.samplers.push_back(sampler);
-		}
-
-		// Channels
-		for (auto& source : anim.channels) {
-			animation_channel channel{};
-
-			if (source.target_path == "rotation") {
-				channel.path = animation_channel::path_type::ROTATION;
-			}
-			if (source.target_path == "translation") {
-				channel.path = animation_channel::path_type::TRANSLATION;
-			}
-			if (source.target_path == "scale") {
-				channel.path = animation_channel::path_type::SCALE;
-			}
-			if (source.target_path == "weights") {
-				std::cout << "weights not yet supported, skipping channel" << std::endl;
-				continue;
-			}
-			channel.sampler_index = source.sampler;
-			channel.node = node_from_index(source.target_node);
-			if (!channel.node) {
-				continue;
-			}
-
-			_animation.channels.push_back(channel);
-		}
-
-		animations.push_back(_animation);
-	}
-}
-
 void model::draw_node(node* _node) {
 
 }
 
 void model::draw() {
 
-}
-
-void model::update_animation(uint32_t index, float time) {
-	if (animations.empty()) {
-		std::cout << ".glTF does not contain animation." << std::endl;
-		return;
-	}
-	if (index > static_cast<uint32_t>(animations.size()) - 1) {
-		std::cout << "No animation with index " << index << std::endl;
-		return;
-	}
-	animation& _animation = animations[index];
-
-	bool updated = false;
-	for (auto& channel : _animation.channels) {
-		animation_sampler& sampler = _animation.samplers[channel.sampler_index];
-		if (sampler.inputs.size() > sampler.outputsVec4.size()) {
-			continue;
-		}
-
-		for (size_t i = 0; i < sampler.inputs.size() - 1; i++) {
-			if ((time >= sampler.inputs[i]) && (time <= sampler.inputs[i + 1])) {
-				float u = std::max(0.0f, time - sampler.inputs[i]) / (sampler.inputs[i + 1] - sampler.inputs[i]);
-				if (u <= 1.0f) {
-					switch (channel.path) {
-					case animation_channel::path_type::TRANSLATION: {
-						glm::vec4 trans = glm::mix(sampler.outputsVec4[i], sampler.outputsVec4[i + 1], u);
-						channel.node->translation = glm::vec3(trans);
-						break;
-					}
-					case animation_channel::path_type::SCALE: {
-						glm::vec4 trans = glm::mix(sampler.outputsVec4[i], sampler.outputsVec4[i + 1], u);
-						channel.node->scale = glm::vec3(trans);
-						break;
-					}
-					case animation_channel::path_type::ROTATION: {
-						glm::quat q1;
-						q1.x = sampler.outputsVec4[i].x;
-						q1.y = sampler.outputsVec4[i].y;
-						q1.z = sampler.outputsVec4[i].z;
-						q1.w = sampler.outputsVec4[i].w;
-						glm::quat q2;
-						q2.x = sampler.outputsVec4[i + 1].x;
-						q2.y = sampler.outputsVec4[i + 1].y;
-						q2.z = sampler.outputsVec4[i + 1].z;
-						q2.w = sampler.outputsVec4[i + 1].w;
-						channel.node->rotation = glm::normalize(glm::slerp(q1, q2, u));
-						break;
-					}
-					}
-					updated = true;
-				}
-			}
-		}
-	}
-	if (updated) {
-		for (auto& node : nodes) {
-			node->update(_shader);
-		}
-	}
 }
 
 void model::destroy() {

@@ -109,6 +109,8 @@ void renderer::render() {
             m_shader->set_uniform_mat4("u_projection", m_camera->GetProjection());
         }
 
+        controller->play_animation(*m_model, delta_time, *m_shader);
+
         for (auto& _node : m_model->linear_nodes) {
             glBindVertexArray(m_model->vao);
             if (_node->_mesh) {
@@ -117,40 +119,6 @@ void renderer::render() {
                 }
             }
         }
-
-        controller->play_animation(*m_model, delta_time, *m_shader);
-
-        std::vector<glm::vec3> colors;
-        colors.push_back(glm::vec3(1, 0, 0));
-        colors.push_back(glm::vec3(0, 1, 0));
-        colors.push_back(glm::vec3(0, 0, 1));
-
-        bool playing = false;
-        bool rotate_model = true;
-        bool animate = true;
-        animation_index = 2;
-        if (playing) {
-            if (rotate_model) {
-                //modelrot.y += delta_time * 35.0f;
-                //if (modelrot.y > 360.0f) {
-                //    modelrot.y -= 360.0f;
-                //}
-            }
-            if ((animate) && (m_model->animations.size() > 0)) {
-                animation_timer += delta_time;
-                if (animation_timer > m_model->animations[animation_index].end) {
-                    animation_timer -= m_model->animations[animation_index].end;
-                }
-                m_model->update_animation(animation_index, animation_timer);
-            }
-            //updateParams();
-            if (rotate_model) {
-                //updateUniformBuffers();
-            }
-        }
-        //updateUniformBuffers();
-        //if (camera.updated) {
-        //}
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
