@@ -1,4 +1,18 @@
-﻿  editor.cpp
+﻿  animation_controller.cpp
+C:\dev\Animare\Animare\src\animation\track.hpp(54,29): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\Animare\Animare\src\animation\clip.hpp(15,51): warning C4834: discarding return value of function with 'nodiscard' attribute
+C:\dev\Animare\Animare\src\animation\animation_controller.hpp(9,11): warning C4099: 'node': type name first seen using 'struct' now seen using 'class'
+C:\dev\Animare\Animare\src\renderer\model.hpp(45,8): message : see declaration of 'node'
+C:\dev\Animare\Animare\src\animation\animation_controller.cpp(35,26): warning C4267: 'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\Animare\Animare\src\animation\animation_controller.cpp(40,31): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\dev\Animare\Animare\src\animation\animation_controller.cpp(79,33): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\dev\Animare\Animare\src\animation\animation_controller.cpp(86,33): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  track.cpp
+C:\dev\Animare\Animare\src\animation\track.hpp(54,29): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\Animare\Animare\src\animation\track.cpp(6,12): warning C4305: 'return': truncation from 'double' to 'real'
+  model.cpp
+C:\dev\Animare\Animare\src\animation\track.hpp(54,29): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\Animare\Animare\src\animation\clip.hpp(15,51): warning C4834: discarding return value of function with 'nodiscard' attribute
   renderer.cpp
 C:\dev\Animare\Animare\src\animation\track.hpp(54,29): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
 C:\dev\Animare\Animare\src\animation\clip.hpp(15,51): warning C4834: discarding return value of function with 'nodiscard' attribute
@@ -6,6 +20,13 @@ C:\dev\Animare\Animare\src\animation\animation_controller.hpp(9,11): warning C40
 C:\dev\Animare\Animare\src\renderer\model.hpp(45,8): message : see declaration of 'node'
 C:\dev\Animare\Animare\src\renderer\renderer.cpp(47,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\dev\Animare\Animare\src\renderer\renderer.cpp(47,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\dev\Animare\Animare\src\renderer\renderer.cpp(169,33): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\dev\Animare\Animare\src\renderer\renderer.cpp(171,33): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
   Generating Code...
+C:\dev\Animare\Animare\src\renderer\model.hpp(68): warning C4172: returning address of local variable or temporary: m
+C:\dev\Animare\Animare\src\renderer\model.hpp(59): warning C4172: returning address of local variable or temporary
+C:\dev\Animare\Animare\src\animation\track.cpp(22): warning C4172: returning address of local variable or temporary
+C:\dev\Animare\Animare\src\animation\track.cpp(17): warning C4172: returning address of local variable or temporary
+C:\dev\Animare\Animare\src\renderer\model.hpp(68): warning C4172: returning address of local variable or temporary: m
+C:\dev\Animare\Animare\src\renderer\model.hpp(135): warning C4715: 'model::get_node': not all control paths return a value
+C:\dev\Animare\Animare\src\renderer\model.hpp(59): warning C4172: returning address of local variable or temporary
   Animare.vcxproj -> C:\dev\Animare\x64\Debug\Animare.exe

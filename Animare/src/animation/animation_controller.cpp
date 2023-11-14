@@ -7,17 +7,19 @@
 animation_controller::animation_controller(model& _model) {
 	// Samplers
 	tinygltf::Model& model = _model._model;
-	for (auto& samp : model.animations[1].samplers) {
+	for (auto& channel : model.animations[1].channels) {
+		tinygltf::AnimationSampler samp = model.animations[1].samplers[channel.sampler];
+
 		track _track;
 
 		if (samp.interpolation == "LINEAR") {
 			_track.set_interpolation(track::interpolation::linear);
 		}
 		if (samp.interpolation == "STEP") {
-			_track.set_interpolation(track::interpolation::linear);
+			_track.set_interpolation(track::interpolation::constant);
 		}
 		if (samp.interpolation == "CUBICSPLINE") {
-			_track.set_interpolation(track::interpolation::linear);
+			_track.set_interpolation(track::interpolation::cubic);
 		}
 
 		// Read sampler input time values
@@ -109,10 +111,9 @@ animation_controller::animation_controller(model& _model) {
 			continue;
 		}
 
-		//_model.m_animation_clip.set_target_node(source.sampler, _model.get_node(source.target_node));
-		_model.m_animation_clip.set_target_node(source.sampler, _model.node_from_index(source.target_node));
+		_model.m_animation_clip.set_target_node(source.sampler, _model.get_node(source.target_node));
+		//_model.m_animation_clip.set_target_node(source.sampler, _model.node_from_index(source.target_node));
 	}
-	//_model.m_animation_clip.set_end_time(_model._model.animations[1].end)
 }
 
 void animation_controller::play_animation(model& _model, real dt, shader& _shader) {

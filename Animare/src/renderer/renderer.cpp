@@ -130,6 +130,8 @@ void renderer::render() {
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
+
+        std::cout << "frame time: " << delta_time << std::endl;
     }
 }
 
