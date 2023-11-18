@@ -39,7 +39,7 @@ struct skin {
     std::string name;
     node* root = nullptr;
     std::vector<glm::mat4> inverse_bind_matrices;
-    std::vector<node*>joints;
+    std::vector<node*> joints;
 };
 
 struct node {
